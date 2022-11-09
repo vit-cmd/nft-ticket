@@ -11,7 +11,7 @@
     "url": "git+https://gitlab.com/ticketnft/dapp-ticket-nft.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nguyen & Viet",
   "license": "ISC",
   "bugs": {
     "url": "https://gitlab.com/ticketnft/dapp-ticket-nft/issues"
@@ -19,10 +19,12 @@
   "homepage": "https://gitlab.com/ticketnft/dapp-ticket-nft",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-    "create-react-app": "^5.0.1",
+    "create-next-app": "^13.0.2",
     "hardhat": "^2.12.2"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.7.3"
+    "@openzeppelin/contracts": "^4.7.3",
+    "@openzeppelin/contracts-upgradeable": "^4.7.3",
+    "react-icons": "^4.6.0"
   }
 }

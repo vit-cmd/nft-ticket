@@ -3,9 +3,8 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract Event is Ownable, Initializable {
+contract Event is Ownable {
 	using Counters for Counters.Counter;
 	Counters.Counter private eventIds;
 
