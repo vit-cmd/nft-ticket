@@ -1,22 +1,39 @@
-import React, {useState, useEffect, useContext, useRef} from 'react';
-import Image from 'next/image';
-import {DiJqueryLogo} from 'react-icons/di';
+import React, { useState, useEffect, useContext, useRef } from "react";
+import Image from "next/image";
+import { DiJqueryLogo } from "react-icons/di";
 //----IMPORT ICON
-import {MdNotifications} from 'react-icons/md';
-import {BsSearch} from 'react-icons/bs';
-import {CgMenuRight} from 'react-icons/cg';
-import {useRouter} from 'next/router';
+import { MdNotifications } from "react-icons/md";
+import { BsSearch } from "react-icons/bs";
+import { CgMenuRight } from "react-icons/cg";
+import { useRouter } from "next/router";
 
 //INTERNAL IMPORT
-import Style from './NavBar.module.css';
+import Style from "./NavBar.module.css";
 // import { Button, Error } from "../componentsindex";
-import images from '../../img';
-import {Button, Profile, Discover, HelpCenter, Notification, SideBar, Error} from '../../components';
+import images from "../../img";
+import {
+  Button,
+  Profile,
+  Discover,
+  HelpCenter,
+  Notification,
+  SideBar,
+  Error,
+} from "../../components";
 
 //IMPORT FROM SMART CONTRACT
-import {TicketNFTContext} from '../../Context/TicketNFTContext';
+import { TicketNFTContext } from "../../Context/TicketNFTContext";
 
 export const NavBar = () => {
+  //SMART CONTRACT SECTION - Get some variable and func of TicketNFTContext object
+  const {
+    currentAccount,
+    connectWallet,
+    openError,
+    accountBalance,
+    eventManager,
+  } = useContext(TicketNFTContext);
+
   //----USESTATE COMPONNTS
   const [discover, setDiscover] = useState(false);
   const [help, setHelp] = useState(false);
@@ -29,14 +46,14 @@ export const NavBar = () => {
   const openMenu = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const mouseEvent = e.target as HTMLElement;
     const btnText = mouseEvent.innerText;
-    console.log('mouse event: ', e);
+    console.log("mouse event: ", e);
 
-    if (btnText == 'Discover') {
+    if (btnText == "Discover") {
       setDiscover(!discover);
       setHelp(false);
       setNotification(false);
       setProfile(false);
-    } else if (btnText == 'Help Center') {
+    } else if (btnText == "Help Center") {
       setDiscover(false);
       setHelp(!help);
       setNotification(false);
@@ -79,15 +96,12 @@ export const NavBar = () => {
     }
   };
 
-  //SMART CONTRACT SECTION
-  const {currentAccount, connectWallet, openError, accountBalance} = useContext(TicketNFTContext);
-
   return (
     <div className={Style.navbar}>
       <div className={Style.navbar_container}>
         <div className={Style.navbar_container_left}>
           <div className={Style.logo}>
-            <span onClick={() => router.push('/')}>
+            <span onClick={() => router.push("/")}>
               <DiJqueryLogo />
             </span>
           </div>
@@ -132,13 +146,19 @@ export const NavBar = () => {
           </div>
 
           {/* CREATE BUTTON SECTION */}
-          <div className={Style.navbar_container_right_button}>
-            {currentAccount == '' ? (
+          {currentAccount == "" && (
+            <div className={Style.navbar_container_right_button}>
               <Button btnName="Connect" handleClick={() => connectWallet()} />
-            ) : (
-              <Button btnName="Create" handleClick={() => router.push('/uploadNFT')} />
-            )}
-          </div>
+            </div>
+          )}
+          {currentAccount !== "" && eventManager && (
+            <div className={Style.navbar_container_right_button}>
+              <Button
+                btnName="Create"
+                handleClick={() => router.push("/uploadNFT")}
+              />
+            </div>
+          )}
 
           {/* USER PROFILE */}
 
@@ -153,7 +173,12 @@ export const NavBar = () => {
                 className={Style.navbar_container_right_profile}
               />
 
-              {profile && <Profile currentAccount={currentAccount} accountBalance={accountBalance} />}
+              {profile && (
+                <Profile
+                  currentAccount={currentAccount}
+                  accountBalance={accountBalance}
+                />
+              )}
             </div>
           </div>
 
@@ -170,7 +195,11 @@ export const NavBar = () => {
       {/* SIDBAR CPMPONENT */}
       {openSideMenu && (
         <div className={Style.sideBar}>
-          <SideBar setOpenSideMenu={setOpenSideMenu} currentAccount={currentAccount} connectWallet={connectWallet} />
+          <SideBar
+            setOpenSideMenu={setOpenSideMenu}
+            currentAccount={currentAccount}
+            connectWallet={connectWallet}
+          />
         </div>
       )}
 

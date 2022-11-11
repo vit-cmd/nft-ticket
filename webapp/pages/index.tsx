@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from "react";
 
 //INTERNAL IMPORT
-import Style from '../styles/index.module.css';
+import Style from "../styles/index.module.css";
 import {
   HeroSection,
-  Service
+  Service,
   // BigNFTSilder,
   // Subscribe,
   // Title,
@@ -18,7 +18,7 @@ import {
   // Brand,
   // Video,
   // Loader,
-} from '../components/';
+} from "../components/";
 // import { getTopCreators } from "../TopCreators/TopCreators";
 
 //IMPORTING CONTRCT DATA
