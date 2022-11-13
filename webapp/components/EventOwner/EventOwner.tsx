@@ -1,34 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
+import React, { useRef, useState } from "react";
 import { Button } from "../Button/Button";
+import { IConnection, IEventContext } from "../../Context";
+import { ethers } from "ethers";
 
 //INTERNAL IMPORT
 import Style from "./EventOwner.module.css";
 
-const ListEventOwner = () => {
-  const router = useRouter();
+const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
+  const { approveEventManager, provider } = props;
   const modalContentRef = useRef(null);
   const [isModalOpen, setOpenModal] = useState(false);
+  const [address, setAddress] = useState("");
 
-  useEffect(() => {
-    // const hanldeCloseModal = (e) => {
-    //   console.log(modalContentRef.current);
-    //   if (
-    //     modalContentRef.current &&
-    //     !modalContentRef.current.contains(e.target)
-    //   ) {
-    //     console.log("a");
-    //     setOpenModal(false);
-    //   }
-    // };
-    // // Bind the event listener
-    // document.addEventListener("click", hanldeCloseModal);
-    // console.log("effect");
-    // return () => {
-    //   // Unbind the event listener on clean up
-    //   document.removeEventListener("click", hanldeCloseModal);
-    // };
-  }, [isModalOpen]);
+  const handleOnChangeInputAddress = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setAddress(e.target.value);
+  };
+
+  const handleOnSubmit = (): void => {
+    if (address == "") {
+      alert("Please enter address");
+      return;
+    }
+    if (!ethers.utils.isAddress(address)) {
+      alert("Please enter valid address!");
+      return;
+    }
+    approveEventManager!(provider!, address);
+  };
 
   return (
     <div className={Style.eventOwner}>
@@ -61,6 +61,9 @@ const ListEventOwner = () => {
                 className={Style.modal_body_input}
                 type="text"
                 placeholder="Enter address"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleOnChangeInputAddress(e)
+                }
               ></input>
             </div>
             <div className={Style.modal__footer}>
@@ -71,7 +74,7 @@ const ListEventOwner = () => {
               ></Button>
               <Button
                 btnName="Submit"
-                handleClick={() => console.log("OKE")}
+                handleClick={() => handleOnSubmit()}
               ></Button>
             </div>
           </div>

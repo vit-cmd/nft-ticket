@@ -12,3 +12,5 @@ artifacts
 
 types
 @types
+
+webapp/.env.example

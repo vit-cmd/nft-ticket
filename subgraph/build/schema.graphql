@@ -1,0 +1,5 @@
+type Event @entity {
+  id: ID!
+  owner: Bytes!
+  name: String! # string
+}
