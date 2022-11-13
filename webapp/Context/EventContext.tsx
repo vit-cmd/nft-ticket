@@ -1,37 +1,49 @@
-import {Props} from 'next/script';
-import React from 'react';
-import EventSol from '../../@artifacts/contracts/Event.sol/Event.json';
-import {Event} from '../../@types/contracts/Event';
-import {connectContract} from './ConnectionContext';
-import {ethers} from 'ethers';
+import { Props } from "next/script";
+import React, { useContext } from "react";
+import EventSol from "../../@artifacts/contracts/Event.sol/Event.json";
+import { Event } from "../../@types/contracts/Event";
+import { connectContract, ConnectionContext } from "./ConnectionContext";
+import { ethers } from "ethers";
 
 export interface IEventContext {
-  checkEventManager(_provider: ethers.providers.Web3Provider, _currentAccount: string): Promise<boolean>;
+  approveEventManager(
+    _provider: ethers.providers.Web3Provider,
+    _address: string
+  ): Promise<void>;
 }
 
 const ADDRESS_EVENT_CONTRACT = process.env.NEXT_PUBLIC_EVENT_CONTRACT;
 
-export const EventContext = React.createContext<IEventContext>({} as  IEventContext);
+export const EventContext = React.createContext<IEventContext>(
+  {} as IEventContext
+);
 
-export const EventProvider: React.FC<Props> = ({children}) => {
-  // Check Event Manager Func
-  const checkEventManager = async (
+export const EventProvider: React.FC<Props> = ({ children }) => {
+  // Aprrove Event Manager Func
+  const approveEventManager = async (
     _provider: ethers.providers.Web3Provider,
-    _currentAccount: string
-  ): Promise<boolean> => {
-    const _signer = _provider.getSigner();
-    const contract = connectContract(ADDRESS_EVENT_CONTRACT!, EventSol.abi, _signer);
-    // const contract2 = connectContract(_signer);
+    _address: string
+  ): Promise<void> => {
+    const contract = connectContract(
+      ADDRESS_EVENT_CONTRACT!,
+      EventSol.abi,
+      _provider.getSigner()
+    ) as Event;
 
-    const isEventManager = await contract!.getApprovedEventManager(_currentAccount);
-    // const transaction = await contract2!.approveEventManager(
-    //   "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-    // );
-    // await transaction.wait();
-    return isEventManager;
+    try {
+      const transaction = await contract!.approveEventManager(_address);
+      await transaction.wait();
+      alert("Approve success");
+    } catch (error: any) {
+      console.log(error.message);
+      // if()
+      // if(error.)
+    }
   };
 
-  const value: IEventContext = {checkEventManager};
+  const value: IEventContext = { approveEventManager };
 
-  return <EventContext.Provider value={value}>{children}</EventContext.Provider>;
+  return (
+    <EventContext.Provider value={value}>{children}</EventContext.Provider>
+  );
 };
