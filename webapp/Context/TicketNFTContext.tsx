@@ -76,10 +76,10 @@ export const TicketNFTProvider = (props: { children: any }) => {
       const balance = ethers.utils.formatEther(balanceBigNumber);
 
       setProvider(_provider);
+      setSigner(_signer);
       setCurrentAccount(accounts[0]);
       setAccountBalance(balance);
       checkEventManager(_provider, accounts[0]);
-      getEventDetail(_provider, 1);
     } catch (error) {
       setError("Error while connecting to wallet");
       setOpenError(true);
@@ -125,10 +125,16 @@ export const TicketNFTProvider = (props: { children: any }) => {
   const checkEventManager = async (_provider: any, _currentAccount: string) => {
     try {
       const contract = fetchContract(_provider);
+      const _signer = _provider.getSigner();
+      const contract2 = fetchContract(_signer);
 
       const isEventManager = await contract!.getApprovedEventManager(
         _currentAccount
       );
+      // const transaction = await contract2!.approveEventManager(
+      //   "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+      // );
+      // await transaction.wait();
       setEventManager(isEventManager);
     } catch (error) {
       setError(`${error}`);
@@ -137,16 +143,16 @@ export const TicketNFTProvider = (props: { children: any }) => {
   };
 
   //---Check Event Manager Func
-  const getEventDetail = async (_provider: any, eventId: number) => {
-    try {
-      const contract = fetchContract(_provider);
-      const event = await contract!.viewEventDetails(eventId);
-      console.log(event);
-    } catch (error) {
-      setError("Error 123");
-      setOpenError(true);
-    }
-  };
+  // const getEventDetail = async (_provider: any, eventId: number) => {
+  //   try {
+  //     const contract = fetchContract(_provider);
+  //     const event = await contract!.viewEventDetails(eventId);
+  //     console.log(event);
+  //   } catch (error) {
+  //     setError("Error 123");
+  //     setOpenError(true);
+  //   }
+  // };
 
   useEffect(() => {
     checkInstalledMetamask();
