@@ -138,13 +138,18 @@ export const NavBar = () => {
           )}
           {currentAccount !== '' && eventManager && (
             <div className={Style.navbar_container_right_button}>
+
               <Button btnName="Create" handleClick={() => router.push('/uploadNFT')} />
             </div>
           )}
           {currentAccount !== '' && admin && (
             <div className={Style.navbar_container_right_button}>
               <Button btnName="Manage Event Owner" handleClick={() => router.push('/event-owner')} />
+
               <Button btnName="Create" handleClick={() => router.push('/create-event')} />
+
+              <Button btnName="Create" handleClick={() => router.push('/uploadNFT')} />
+
             </div>
           )}
 

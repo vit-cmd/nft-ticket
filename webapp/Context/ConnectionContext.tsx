@@ -130,7 +130,6 @@ export const ConnectionProvider: React.FC<Props> = ({ children }) => {
     admin,
     provider,
     openError,
-    provider,
     error,
     setError,
     eventManager,
