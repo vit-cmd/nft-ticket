@@ -10,7 +10,6 @@ import Style from "./Profile.module.css";
 import images from "../../img";
 
 export const Profile = (props: { currentAccount: string, accountBalance: string }) => {
-  console.log('Current account: ', props.currentAccount);
   
   return (
     <div className={Style.profile}>

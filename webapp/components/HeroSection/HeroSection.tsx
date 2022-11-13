@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 
@@ -7,17 +7,13 @@ import Style from './HeroSection.module.css';
 import {Button} from '..';
 import images from '../../img';
 
-//SMART CONTRACT IMPORT
-import {TicketNFTContext} from '../../Context/TicketNFTContext';
-
 export const HeroSection = () => {
-  const {titleData} = useContext(TicketNFTContext);
   const router = useRouter();
   return (
     <div className={Style.heroSection}>
       <div className={Style.heroSection_box}>
         <div className={Style.heroSection_box_left}>
-          <h1>{titleData} 🖼️</h1>
+          <h1>Event, Ticket, and sell NFTs 🖼️</h1>
           <p>Discover the most outstanding NTFs in all topics of life. Creative your NTFs and sell them</p>
           <Button btnName="Start your search" handleClick={() => router.push('/searchPage')} />
         </div>

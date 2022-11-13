@@ -1,28 +1,18 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { Footer, NavBar } from "../components";
-import { TicketNFTProvider } from "../Context/TicketNFTContext";
+import '../styles/globals.css';
+import type {AppProps} from 'next/app';
+import {Footer, NavBar} from '../components';
+import {IPFSProvider, ConnectionProvider, EventProvider} from '../Context';
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({Component, pageProps}: AppProps) {
   return (
     <div>
-      <TicketNFTProvider>
-        <NavBar />
-        <Component {...pageProps} />
-        <Footer />
-      </TicketNFTProvider>
+      <EventProvider>
+        <ConnectionProvider>
+          <NavBar />
+          <Component {...pageProps} />
+          <Footer />
+        </ConnectionProvider>
+      </EventProvider>
     </div>
   );
 }
-
-// const MyApp = ({ Component, pageProps }) => (
-//   <div>
-//     <NFTMarketplaceProvider>
-//       <NavBar />
-//       <Component {...pageProps} />
-//       <Footer />
-//     </NFTMarketplaceProvider>
-//   </div>
-// );
-
-// export default MyApp;

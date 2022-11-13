@@ -6,10 +6,11 @@ import Style from "./Error.module.css";
 import images from "../../img";
 
 //SMAFRT CONTRCAT IMPORT CONTEXT
-import { TicketNFTContext } from "../../Context/TicketNFTContext";
+import { Props } from "next/script";
+import { ConnectionContext } from "../../Context";
 
-export const Error = () => {
-  const { error, setOpenError } = useContext(TicketNFTContext);
+export const Error: React.FC<Props> = ({children}, ) => {
+  const { error, setOpenError } = useContext(ConnectionContext);
   return (
     <div className={Style.Error} onClick={() => setOpenError(false)}>
       <div className={Style.Error_box}>
