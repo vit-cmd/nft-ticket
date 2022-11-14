@@ -31,9 +31,9 @@ export const IPFSProvider: React.FC<Props> = ({children}) => {
   //---UPLOAD TO IPFS FUNCTION
   const uploadImage = async (file: File): Promise<string> => {
     try {
-      const added = await client.add({content: file});
-      const url = `${subdomain}/ipfs/${added.path}`;
-      return url;
+      const hash = await client.add({content: file});
+      // const url = `${subdomain}/ipfs/${added.path}`;
+      return hash.path;
     } catch (error) {
       setError('Error Uploading to IPFS');
       setOpenError(true);

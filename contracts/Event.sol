@@ -8,8 +8,6 @@ contract Event is Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private eventIds;
 
-    constructor() {}
-
     struct EventData {
         string name;
         string location;
@@ -71,6 +69,7 @@ contract Event is Ownable {
      */
     function approveEventManager(address address_)
         external
+        payable
         onlyOwner
         returns (bool)
     {
@@ -101,7 +100,7 @@ contract Event is Ownable {
         uint64 priceUnit_,
         uint256 startDate_,
         uint256 endDate_
-    ) external isEventManager returns (uint256) {
+    ) external payable isEventManager returns (uint256) {
         uint256 currentEventId = eventIds.current();
 
         events[currentEventId].name = name_;
@@ -128,6 +127,14 @@ contract Event is Ownable {
         );
 
         return currentEventId;
+    }
+
+    function getString()
+        external
+        view
+        returns (bool)
+    {
+        return events[eventIds.current() - 1].disable;
     }
 
     function getApprovedEventManager(address address_)

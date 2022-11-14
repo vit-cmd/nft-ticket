@@ -10,6 +10,16 @@ export interface IEventContext {
     _provider: ethers.providers.Web3Provider,
     _address: string
   ): Promise<void>;
+  createEvent(
+    provider: ethers.providers.Web3Provider,
+    eventName: string,
+    location: string,
+    description: string,
+    hashImage: string,
+    price: number,
+    startDay: number,
+    endDay: number
+  ): Promise<void>;
 }
 
 const ADDRESS_EVENT_CONTRACT = process.env.NEXT_PUBLIC_EVENT_CONTRACT;
@@ -41,7 +51,39 @@ export const EventProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const value: IEventContext = { approveEventManager };
+
+  // Create event in bockchain
+  const createEvent = async (
+    provider: ethers.providers.Web3Provider,
+    eventName: string,
+    location: string,
+    description: string,
+    hashImage: string,
+    price: number,
+    startDay: number,
+    endDay: number
+  ): Promise<void> => {
+    const signer = provider.getSigner();
+    const contract = connectContract(ADDRESS_EVENT_CONTRACT!, EventSol.abi, signer) as Event;
+    
+    const transaction = await contract.createEvent(
+      eventName,
+      location,
+      description,
+      hashImage,
+      price,
+      startDay,
+      endDay
+    );
+    await transaction.wait();
+    console.log('Transaction: ', transaction);
+
+    const hash = await contract.getString();
+    console.log('Hash: ', hash);
+    
+  };
+
+  const value: IEventContext = {approveEventManager, createEvent};
 
   return (
     <EventContext.Provider value={value}>{children}</EventContext.Provider>

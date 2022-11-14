@@ -14,6 +14,7 @@ export interface IConnection {
   admin: boolean;
   provider: ethers.providers.Web3Provider | undefined;
   // state
+  setError: React.Dispatch<React.SetStateAction<string>>;
   setOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   // function
   connectWallet(): Promise<void>;
@@ -127,9 +128,11 @@ export const ConnectionProvider: React.FC<Props> = ({ children }) => {
     currentAccount,
     accountBalance,
     admin,
+    provider,
     openError,
     provider,
     error,
+    setError,
     eventManager,
     setOpenError,
     connectWallet,
