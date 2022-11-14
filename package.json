@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "graph-codegen": "cd ticket-nft-subgraph && graph codegen",
+    "graph-build": "cd ticket-nft-subgraph && graph build",
+    "graph-test": "graph test",
+    "graph-local": "docker-compose up",
+    "graph-local-clean": "docker-compose down -v && docker-compose rm -v && sudo rm -rf data/ipfs data/postgres",
+    "create-local": "graph create --node http://127.0.0.1:8020 ticket-nft",
+    "deploy-local": "cd ticket-nft-subgraph && graph deploy --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020 ticket-nft --network localhost",
+    "hardhat-local": "hardhat node --hostname 0.0.0.0"
   },
   "repository": {
     "type": "git",
@@ -20,7 +27,10 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "create-next-app": "^13.0.2",
-    "hardhat": "^2.12.2"
+    "hardhat": "^2.12.2",
+    "@graphprotocol/graph-cli": "^0.33.0",
+    "@graphprotocol/graph-ts": "^0.27.0",
+    "@graphprotocol/hardhat-graph": "https://github.com/graphprotocol/hardhat-graph"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
