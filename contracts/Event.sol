@@ -30,12 +30,14 @@ contract Event is Ownable {
         string name,
         string location,
         string description,
-        string image,
+        string hashImage,
         address eventManager,
         uint64 priceUnit,
         uint256 startDay,
         uint256 endDay
     );
+
+    event UpdateAprroveEventManager(address eventManager, bool aprrove);
 
     // Modifiers
     modifier isEventManager() {
@@ -47,6 +49,20 @@ contract Event is Ownable {
     }
 
     // Function
+
+    /**
+     * @dev Allows user request to be event manager
+     * @param address_ address that request to be event manager
+     */
+    function requestToBeEventManager(address address_) external returns (bool) {
+        require(
+            approvedEventManager[address_] == false,
+            "You are event manager already"
+        );
+        emit UpdateAprroveEventManager(address_, false);
+        return true;
+    }
+
     /**
      * @dev Allows the Contract admin to approve the Event Manager
      * @notice onlyOwner modifier should be invoked
@@ -64,6 +80,8 @@ contract Event is Ownable {
         );
 
         approvedEventManager[address_] = true;
+
+        emit UpdateAprroveEventManager(address_, true);
 
         return true;
     }

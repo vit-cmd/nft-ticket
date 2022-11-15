@@ -1,0 +1,16 @@
+type Event @entity {
+  id: ID!
+  name: String!
+  location: String!
+  description: String!
+  hashImage: String!
+  eventManager: Bytes! # address
+  priceUnit: BigInt!
+  startDay: BigInt!
+  endDay: BigInt!
+}
+
+type EventManager @entity {
+  id: ID!
+  approve: Boolean!
+}

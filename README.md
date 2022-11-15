@@ -48,8 +48,8 @@ _NOTE: You can check the `deploy` task in the [hardhat.config.ts](https://github
    In order to make it easy and type-safe to work with smart contracts, events and entities, the Graph CLI can generate AssemblyScript types from the subgraph's GraphQL schema and the contract ABIs included in the data sources.
    Run after change compile contract (change abi) or change graphql schema
 
-6. Create a subgraph on the local hardhat node by running `yarn create-local` or `npm run create-local`
-7. Compile & Deploy the subgraph on the local hardhat node by running `yarn deploy-local` or `npm run deploy-local`
+6. Create a subgraph on the local graph node by running `yarn create-local` or `npm run create-local`
+7. Compile & Deploy the subgraph on the local graph node by running `yarn deploy-local` or `npm run deploy-local`
 8. You can query the subgraph by opening the following url in your browser `http://127.0.0.1:8000/subgraphs/name/ticket-nft/graphql`
 
 NOTE: If for any reason you stop the hardhat node, it is recommended to stop the graph node, delete the `ipfs` and `postgres` folders in `data` (or the whole `data` folder) created by the graph node (you can run `yarn graph-local-clean` that will do that for you), and repeat steps `2-8`.
