@@ -3,12 +3,11 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "hardhat/console.sol";
 
 contract Event is Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private eventIds;
-
-    constructor() {}
 
     struct EventData {
         string name;
@@ -71,6 +70,7 @@ contract Event is Ownable {
      */
     function approveEventManager(address address_)
         external
+        payable
         onlyOwner
         returns (bool)
     {
@@ -101,7 +101,7 @@ contract Event is Ownable {
         uint64 priceUnit_,
         uint256 startDate_,
         uint256 endDate_
-    ) external isEventManager returns (uint256) {
+    ) external payable isEventManager returns (uint256) {
         uint256 currentEventId = eventIds.current();
 
         events[currentEventId].name = name_;
@@ -126,8 +126,16 @@ contract Event is Ownable {
             startDate_,
             endDate_
         );
-
+        console.log("Create event with id: ", currentEventId);
         return currentEventId;
+    }
+
+    function getEvent()
+        external
+        view
+        returns (EventData memory)
+    {
+        return events[eventIds.current() - 1];
     }
 
     function getApprovedEventManager(address address_)

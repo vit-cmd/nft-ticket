@@ -19,7 +19,7 @@ dataSources:
         - name: Event
           file: ./abis/Event.json
       eventHandlers:
-        - event: NewEvent(uint256,string,string,string,string,address,uint64,uint256,uint256,uint256)
+        - event: NewEvent(uint256,string,string,string,string,address,uint64,uint256,uint256)
           handler: handleNewEvent
         - event: UpdateAprroveEventManager(address,bool)
           handler: handlerUpdateAprroveEventManager

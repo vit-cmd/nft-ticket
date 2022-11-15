@@ -9,3 +9,4 @@ export {Error} from './Error/Error';
 export {Footer} from './Footer/Footer';
 export {HeroSection} from './HeroSection/HeroSection';
 export {Service} from './Service/Service';
+export {CreateEvent} from './CreateNFT/CreateNFT';
