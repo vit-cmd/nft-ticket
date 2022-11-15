@@ -1,6 +1,7 @@
 import React, {useState, useCallback, useContext} from 'react';
 import Image from 'next/image';
 import {AiFillFire, AiFillHeart} from 'react-icons/ai';
+import {BiDetail} from 'react-icons/bi'; 
 import {MdVerified, MdTimer} from 'react-icons/md';
 import {TbArrowBigLeftLines, TbArrowBigRightLine} from 'react-icons/tb';
 
@@ -10,8 +11,7 @@ import images from '../../img';
 import {Button, LoadingSpinner} from '../../components';
 import {GraphQLContext} from '../../Context';
 import {IEvent} from '../../constants/interfaces';
-import {now, unix} from 'moment';
-import { isArray } from '@apollo/client/cache/inmemory/helpers';
+import {now} from 'moment';
 
 const getReturnValues = (countDown: number) => {
   // calculate time left
@@ -116,7 +116,7 @@ export const BigNFTSilder = () => {
                 <span className={Style.bigNFTSlider_box_left_bidding_box_icon}>
                   <MdTimer />
                 </span>
-                <span>Auction ending in</span>
+                <span>Event end time</span>
               </p>
 
               <div className={Style.bigNFTSlider_box_left_bidding_box_timer}>
@@ -141,9 +141,13 @@ export const BigNFTSilder = () => {
                 </div>
               </div>
 
-              <div>
-                Description: <p>{data[idNumber].description}</p>
-              </div>
+              <p className={Style.bigNFTSlider_box_left_bidding_box_auction}>
+                <span className={Style.bigNFTSlider_box_left_bidding_box_icon}>
+                  <BiDetail />
+                </span>
+                <span>Description</span>
+              </p>
+              <p>{data[idNumber].description}</p>
 
               <div className={Style.bigNFTSlider_box_left_button}>
                 <Button btnName="Place" handleClick={() => {}} />
