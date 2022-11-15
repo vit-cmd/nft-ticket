@@ -3,6 +3,7 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "hardhat/console.sol";
 
 contract Event is Ownable {
     using Counters for Counters.Counter;
@@ -125,16 +126,16 @@ contract Event is Ownable {
             startDate_,
             endDate_
         );
-
+        console.log("Create event with id: ", currentEventId);
         return currentEventId;
     }
 
-    function getString()
+    function getEvent()
         external
         view
-        returns (bool)
+        returns (EventData memory)
     {
-        return events[eventIds.current() - 1].disable;
+        return events[eventIds.current() - 1];
     }
 
     function getApprovedEventManager(address address_)
