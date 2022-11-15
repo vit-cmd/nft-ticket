@@ -58,10 +58,6 @@ export class NewEvent__Params {
   get endDay(): BigInt {
     return this._event.parameters[8].value.toBigInt();
   }
-
-  get randomNumber(): BigInt {
-    return this._event.parameters[9].value.toBigInt();
-  }
 }
 
 export class OwnershipTransferred extends ethereum.Event {
@@ -111,84 +107,6 @@ export class UpdateAprroveEventManager__Params {
 export class Event extends ethereum.SmartContract {
   static bind(address: Address): Event {
     return new Event("Event", address);
-  }
-
-  approveEventManager(address_: Address): boolean {
-    let result = super.call(
-      "approveEventManager",
-      "approveEventManager(address):(bool)",
-      [ethereum.Value.fromAddress(address_)]
-    );
-
-    return result[0].toBoolean();
-  }
-
-  try_approveEventManager(address_: Address): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "approveEventManager",
-      "approveEventManager(address):(bool)",
-      [ethereum.Value.fromAddress(address_)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  createEvent(
-    name_: string,
-    location_: string,
-    description_: string,
-    image_: string,
-    priceUnit_: BigInt,
-    startDate_: BigInt,
-    endDate_: BigInt
-  ): BigInt {
-    let result = super.call(
-      "createEvent",
-      "createEvent(string,string,string,string,uint64,uint256,uint256):(uint256)",
-      [
-        ethereum.Value.fromString(name_),
-        ethereum.Value.fromString(location_),
-        ethereum.Value.fromString(description_),
-        ethereum.Value.fromString(image_),
-        ethereum.Value.fromUnsignedBigInt(priceUnit_),
-        ethereum.Value.fromUnsignedBigInt(startDate_),
-        ethereum.Value.fromUnsignedBigInt(endDate_)
-      ]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_createEvent(
-    name_: string,
-    location_: string,
-    description_: string,
-    image_: string,
-    priceUnit_: BigInt,
-    startDate_: BigInt,
-    endDate_: BigInt
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "createEvent",
-      "createEvent(string,string,string,string,uint64,uint256,uint256):(uint256)",
-      [
-        ethereum.Value.fromString(name_),
-        ethereum.Value.fromString(location_),
-        ethereum.Value.fromString(description_),
-        ethereum.Value.fromString(image_),
-        ethereum.Value.fromUnsignedBigInt(priceUnit_),
-        ethereum.Value.fromUnsignedBigInt(startDate_),
-        ethereum.Value.fromUnsignedBigInt(endDate_)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   getApprovedEventManager(address_: Address): boolean {
@@ -250,32 +168,6 @@ export class Event extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-}
-
-export class ConstructorCall extends ethereum.Call {
-  get inputs(): ConstructorCall__Inputs {
-    return new ConstructorCall__Inputs(this);
-  }
-
-  get outputs(): ConstructorCall__Outputs {
-    return new ConstructorCall__Outputs(this);
-  }
-}
-
-export class ConstructorCall__Inputs {
-  _call: ConstructorCall;
-
-  constructor(call: ConstructorCall) {
-    this._call = call;
-  }
-}
-
-export class ConstructorCall__Outputs {
-  _call: ConstructorCall;
-
-  constructor(call: ConstructorCall) {
-    this._call = call;
   }
 }
 

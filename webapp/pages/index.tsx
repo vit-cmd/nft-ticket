@@ -2,12 +2,13 @@ import React from 'react';
 
 //INTERNAL IMPORT
 import Style from '../styles/index.module.css';
-import {HeroSection, Service} from '../components/';
+import {BigNFTSilder, HeroSection, Service} from '../components/';
 const Home = () => {
   return (
     <div className={Style.homePage}>
       <HeroSection />
       <Service />
+      <BigNFTSilder />
     </div>
   );
 };

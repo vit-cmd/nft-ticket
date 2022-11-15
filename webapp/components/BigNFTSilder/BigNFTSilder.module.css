@@ -53,9 +53,9 @@
   border-radius: 50%;
 }
 
-.bigNFTSlider_box_left_creator_profile_info {
+/* .bigNFTSlider_box_left_creator_profile_info {
   line-height: 0;
-}
+} */
 
 .bigNFTSlider_box_left_creator_profile_info p {
   margin-bottom: -0.7rem;
@@ -110,7 +110,7 @@
 }
 
 .bigNFTSlider_box_left_bidding_box_timer_item p {
-  font-size: 2rem;
+  font-size: 4rem;
   font-weight: 900;
   line-height: 0;
 }
