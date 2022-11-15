@@ -6,9 +6,10 @@ import { connectContract } from "./ConnectionContext";
 import { ethers } from "ethers";
 
 export interface IEventContext {
-  approveEventManager(
+  approveOrDisableEventManager(
     _provider: ethers.providers.Web3Provider,
-    _address: string
+    _address: string,
+    _status: boolean
   ): Promise<void>;
   createEvent(
     provider: ethers.providers.Web3Provider,
@@ -30,9 +31,10 @@ export const EventContext = React.createContext<IEventContext>(
 
 export const EventProvider: React.FC<Props> = ({ children }) => {
   // Aprrove Event Manager Func
-  const approveEventManager = async (
+  const approveOrDisableEventManager = async (
     _provider: ethers.providers.Web3Provider,
-    _address: string
+    _address: string,
+    _status: boolean
   ): Promise<void> => {
     const contract = connectContract(
       ADDRESS_EVENT_CONTRACT!,
@@ -41,9 +43,13 @@ export const EventProvider: React.FC<Props> = ({ children }) => {
     ) as Event;
 
     try {
-      const transaction = await contract!.approveEventManager(_address);
+      const transaction = await contract!.approveOrDisableEventManager(
+        _address,
+        _status
+      );
       await transaction.wait();
-      alert("Approve success");
+      const actionName = _status === true ? "Approve" : "Disable";
+      alert(`${actionName} successfully`);
     } catch (error: any) {
       console.log(error.message);
       // if()
@@ -86,7 +92,7 @@ export const EventProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const value: IEventContext = { approveEventManager, createEvent };
+  const value: IEventContext = { approveOrDisableEventManager, createEvent };
 
   return (
     <EventContext.Provider value={value}>{children}</EventContext.Provider>

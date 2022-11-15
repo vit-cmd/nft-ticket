@@ -55,7 +55,7 @@ types
 webapp/.env.example
 
 # Subgraph
-# ticket-nft-subgraph/generated
-# ticket-nft-subgraph/build
+ticket-nft-subgraph/generated
+ticket-nft-subgraph/build
 # Docker
 data
