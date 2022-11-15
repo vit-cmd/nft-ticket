@@ -104,9 +104,14 @@
         "internalType": "address",
         "name": "address_",
         "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "status_",
+        "type": "bool"
       }
     ],
-    "name": "approveEventManager",
+    "name": "approveOrDisableEventManager",
     "outputs": [
       {
         "internalType": "bool",

@@ -8,14 +8,14 @@ const EvtOwner = () => {
   const router = useRouter();
   // Use Context
   const { currentAccount, provider, admin } = useContext(ConnectionContext);
-  const { approveEventManager } = useContext(EventContext);
+  const { approveOrDisableEventManager } = useContext(EventContext);
 
   return (
     <>
       {currentAccount && admin ? (
         <ListEventOwner
           provider={provider}
-          approveEventManager={approveEventManager}
+          approveOrDisableEventManager={approveOrDisableEventManager}
         />
       ) : (
         <p style={{}}>You don't have permission to access this page</p>
