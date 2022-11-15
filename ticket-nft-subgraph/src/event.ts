@@ -1,4 +1,3 @@
-import { BigInt, Entity } from "@graphprotocol/graph-ts";
 import {
   NewEvent,
   OwnershipTransferred,
@@ -7,7 +6,7 @@ import {
 import { Event, EventManager } from "../generated/schema";
 
 export function handleNewEvent(event: NewEvent): void {
-  let entity = new Event(event.params.eventId.toHex());
+  let entity = new Event(event.params.eventId.toString());
 
   // Entity fields can be set based on event parameters
   entity.name = event.params.name;

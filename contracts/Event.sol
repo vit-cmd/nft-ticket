@@ -21,8 +21,8 @@ contract Event is Ownable {
         bool disable;
     }
 
-    mapping(uint256 => EventData) events; // Each event of event manager
-    mapping(address => bool) approvedEventManager;
+    mapping(uint256 => EventData) private events; // Each event of event manager
+    mapping(address => bool) private approvedEventManager;
 
     event NewEvent(
         uint256 eventId,
@@ -128,14 +128,6 @@ contract Event is Ownable {
         );
         console.log("Create event with id: ", currentEventId);
         return currentEventId;
-    }
-
-    function getEvent()
-        external
-        view
-        returns (EventData memory)
-    {
-        return events[eventIds.current() - 1];
     }
 
     function getApprovedEventManager(address address_)

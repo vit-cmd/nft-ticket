@@ -36,6 +36,12 @@ export const CreateEvent = () => {
       <Error />;
       return;
     }
+
+    if (endDay < startDay) {
+      alert('The end date is not less than the start date.');
+      return;
+    }
+
     const hash = await uploadImage(file!);
     await createEvent(provider, eventName, location, description, hash, priceUnit, startDay, endDay);
   };

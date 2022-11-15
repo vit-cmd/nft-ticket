@@ -39,12 +39,12 @@ A repository demonstrating how the [hardhat-graph](https://github.com/graphproto
 3. Run graph node `yarn graph-local` or `npm run graph-local`
 4. Compile & Deploy the contracts:
 
-- `npx hardhat deploy --contract-name Event`
+- `npx hrdhat deploy --contract-name Event`
 - `npx hardhat deploy --contract-name TicketType`
 
 _NOTE: You can check the `deploy` task in the [hardhat.config.ts](https://github.com/dimitrovmaksim/hardhat-graph-demo/blob/main/hardhat.config.ts#L11) file. After compiling and deploying the contract to the local hardhat node, it will execute the built-in `graph` task from the hardhat-graph plugin. In this case it will update the abi's in the subgraph folder(ticket-nft-subgraph), it will update the networks.json file with the addresses of the deployed contracts. You'll get a warning informing you that there are differences between the events in your contract's ABI and the subgraph.yaml (In this case we don't want to index all the events so we can ignore the warning) If you make any changes to the subgraph.yaml or schema.graphql files, you will have to run the `codegen` command in order to update the generated files. You can check more info about what each `hardhat-graph` command does here: https://github.com/graphprotocol/hardhat-graph#tasks. This is only an example usage, you can create your own workflow that better suites your needs._
 
-5. Run `yagrn raph-codegen` or `npm run graph-codegen`
+5. Run `yarn graph-codegen` or `npm run graph-codegen`
    In order to make it easy and type-safe to work with smart contracts, events and entities, the Graph CLI can generate AssemblyScript types from the subgraph's GraphQL schema and the contract ABIs included in the data sources.
    Run after change compile contract (change abi) or change graphql schema
 

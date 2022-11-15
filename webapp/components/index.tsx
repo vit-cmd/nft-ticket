@@ -10,3 +10,5 @@ export {Footer} from './Footer/Footer';
 export {HeroSection} from './HeroSection/HeroSection';
 export {Service} from './Service/Service';
 export {CreateEvent} from './CreateNFT/CreateNFT';
+export {BigNFTSilder} from './BigNFTSilder/BigNFTSilder';
+export {LoadingSpinner} from './LoadingSpinner/LoadingSpinner';
