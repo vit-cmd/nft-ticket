@@ -37,7 +37,7 @@ export function handleNewEvent(event: NewEvent): void {
   // The following functions can then be called on this contract to access
   // state variables and other data:
   //
-  // - contract.approveEventManager(...)
+  // - contract.approveOrDisableEventManager(...)
   // - contract.createEvent(...)
   // - contract.getApprovedEventManager(...)
   // - contract.owner(...)

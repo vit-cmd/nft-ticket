@@ -1,6 +1,6 @@
 .eventOwner {
   width: 100%;
-  margin-block: 8rem;
+  margin-block: 6rem;
 }
 
 .btn_cancel {
@@ -8,6 +8,44 @@
   color: var(--icons-color);
   background-color: white;
   box-shadow: none;
+}
+#eventmanagers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 2.5rem;
+}
+
+#eventmanagers tr {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+#eventmanagers td,
+#eventmanagers th {
+  padding: 15px 0;
+}
+
+#eventmanagers tr:hover {
+  /* background-color: #ddd; */
+}
+
+#eventmanagers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--icons-color);
+}
+
+.approved {
+  color: rgb(9, 168, 80);
+}
+
+.not_approve {
+  color: rgb(245, 38, 38);
 }
 
 .modal {

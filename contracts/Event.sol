@@ -63,25 +63,28 @@ contract Event is Ownable {
     }
 
     /**
-     * @dev Allows the Contract admin to approve the Event Manager
+     * @dev Allows the Contract admin to approve or disable the Event Manager
      * @notice onlyOwner modifier should be invoked
      * @param address_ address that request to be event manager
-     * @return bool true/false if the approval was successful of not
+     * @param status_ disable: false, approve: true
+     * @return bool true/false if the approval or disable was successful of not
      */
-    function approveEventManager(address address_)
+    function approveOrDisableEventManager(address address_, bool status_)
         external
         payable
         onlyOwner
         returns (bool)
     {
-        require(
-            approvedEventManager[address_] == false,
-            "Event manager already approved before"
-        );
+        if (status_ == true) {
+            require(
+                approvedEventManager[address_] == false,
+                "Event manager already approved before"
+            );
+        }
 
-        approvedEventManager[address_] = true;
+        approvedEventManager[address_] = status_;
 
-        emit UpdateAprroveEventManager(address_, true);
+        emit UpdateAprroveEventManager(address_, status_);
 
         return true;
     }
