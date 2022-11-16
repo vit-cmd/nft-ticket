@@ -1,13 +1,14 @@
-import { useRouter } from "next/router";
-import React, { useContext } from "react";
-import ListEventOwner from "../components/EventOwner/EventOwner";
-import { ConnectionContext, EventContext } from "../Context";
+import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
+import ListEventOwner from '../components/EventOwner/EventOwner';
+import { ConnectionContext, EventContext } from '../Context';
 
 const EvtOwner = () => {
   // Use History
   const router = useRouter();
   // Use Context
-  const { currentAccount, provider, admin } = useContext(ConnectionContext);
+  const { currentAccount, provider, admin, setEventManager } =
+    useContext(ConnectionContext);
   const { approveOrDisableEventManager } = useContext(EventContext);
 
   return (
@@ -15,6 +16,8 @@ const EvtOwner = () => {
       {currentAccount && admin ? (
         <ListEventOwner
           provider={provider}
+          currentAccount={currentAccount}
+          setEventManager={setEventManager}
           approveOrDisableEventManager={approveOrDisableEventManager}
         />
       ) : (

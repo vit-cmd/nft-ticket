@@ -14,7 +14,6 @@ export const CreateEvent = () => {
   const [eventName, setEventName] = React.useState<string>();
   const [location, setLocation] = React.useState<string>();
   const [description, setDescription] = React.useState<string>();
-  const [priceUnit, setPriceUnit] = React.useState<number>();
   const [startDay, setStartDay] = React.useState<number>();
   const [endDay, setEndDay] = React.useState<number>();
   const [file, setFile] = React.useState<File>();
@@ -30,7 +29,7 @@ export const CreateEvent = () => {
       return;
     }
 
-    if (!file || !eventName || !location || !description || !priceUnit || !startDay || !endDay) {
+    if (!file || !eventName || !location || !description || !startDay || !endDay) {
       setOpenError(true);
       setError('Please enter all fields');
       <Error />;
@@ -43,7 +42,7 @@ export const CreateEvent = () => {
     }
 
     const hash = await uploadImage(file!);
-    await createEvent(provider, eventName, location, description, hash, priceUnit, startDay, endDay);
+    await createEvent(provider, eventName, location, description, hash, startDay, endDay);
   };
 
   return (
@@ -83,16 +82,6 @@ export const CreateEvent = () => {
         </div>
 
         <div className={Style.Form_box_input_social}>
-          <div className={Style.Form_box_input}>
-            <label htmlFor="Royalties">Price</label>
-            <div className={Style.Form_box_input_box}>
-              <div className={Style.Form_box_input_box_icon}>
-                <MdPriceChange />
-              </div>
-              <input type="number" placeholder="0 ETH" onChange={(e) => setPriceUnit(Number(e.target.value))} />
-            </div>
-          </div>
-
           <div className={Style.Form_box_input}>
             <label htmlFor="size">Start Day</label>
             <div className={Style.Form_box_input_box}>

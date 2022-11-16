@@ -30,7 +30,6 @@ contract Event is Ownable {
         string description,
         string hashImage,
         address eventManager,
-        uint64 priceUnit,
         uint256 startDay,
         uint256 endDay
     );
@@ -100,7 +99,6 @@ contract Event is Ownable {
         string memory location_,
         string memory description_,
         string memory image_,
-        uint64 priceUnit_,
         uint256 startDate_,
         uint256 endDate_
     ) external payable isEventManager returns (uint256) {
@@ -123,7 +121,6 @@ contract Event is Ownable {
             description_,
             image_,
             msg.sender,
-            priceUnit_,
             startDate_,
             endDate_
         );
@@ -139,12 +136,10 @@ contract Event is Ownable {
         return approvedEventManager[address_];
     }
 
-    function isOwnerOfEvent(uint256 eventId_ )
-        external
-        view
-        returns (bool)
-    {
-        if(events[eventId_].eventManager == msg.sender) {
+    function isOwnerOfEvent(uint256 eventId_) external view returns (bool) {
+        console.log("Origin sender: ", tx.origin);
+        console.log("EventManager: ", events[eventId_].eventManager);
+        if (events[eventId_].eventManager == tx.origin) {
             return true;
         }
         return false;

@@ -5,7 +5,6 @@ export interface IEvent {
   id: number;
   hashImage: string;
   location: string;
-  priceUnit: number;
   name: number;
   startDay: number;
 }
