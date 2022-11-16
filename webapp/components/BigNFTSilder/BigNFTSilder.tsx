@@ -1,24 +1,22 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, {useState, useCallback, useContext} from 'react';
 import Image from 'next/image';
-import { AiFillFire, AiFillHeart } from 'react-icons/ai';
-import { BiDetail } from 'react-icons/bi';
-import { MdVerified, MdTimer } from 'react-icons/md';
-import { TbArrowBigLeftLines, TbArrowBigRightLine } from 'react-icons/tb';
+import {AiFillFire, AiFillHeart} from 'react-icons/ai';
+import {BiDetail} from 'react-icons/bi';
+import {MdVerified, MdTimer} from 'react-icons/md';
+import {TbArrowBigLeftLines, TbArrowBigRightLine} from 'react-icons/tb';
 
 //INTERNAL IMPORT
 import Style from './BigNFTSilder.module.css';
 import images from '../../img';
-import { Button, LoadingSpinner } from '../../components';
-import { GraphQLContext } from '../../Context';
-import { IEvent } from '../../constants/interfaces';
-import { now } from 'moment';
+import {Button, LoadingSpinner} from '../../components';
+import {GraphQLContext} from '../../Context';
+import {IEvent} from '../../constants/interfaces';
+import {now} from 'moment';
 
 const getReturnValues = (countDown: number) => {
   // calculate time left
   const days = Math.floor(countDown / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
+  const hours = Math.floor((countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((countDown % (1000 * 60)) / 1000);
 
@@ -32,7 +30,7 @@ export const BigNFTSilder = () => {
   const [hour, setHour] = useState<number>(0);
   const [minute, setMinute] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
-  const { getEvents } = useContext(GraphQLContext);
+  const {getEvents} = useContext(GraphQLContext);
 
   React.useEffect(() => {
     const getData = async () => {
@@ -55,9 +53,7 @@ export const BigNFTSilder = () => {
       const interval = setInterval(() => {
         const _countDown = data[idNumber].endDay * 1000 - now();
         setDay(Math.floor(_countDown / (1000 * 60 * 60 * 24)));
-        setHour(
-          Math.floor((_countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-        );
+        setHour(Math.floor((_countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
         setMinute(Math.floor((_countDown % (1000 * 60 * 60)) / (1000 * 60)));
         setSeconds(Math.floor((_countDown % (1000 * 60)) / 1000));
       }, 1000);
@@ -88,9 +84,7 @@ export const BigNFTSilder = () => {
                   width={50}
                   height={50}
                 />
-                <div
-                  className={Style.bigNFTSlider_box_left_creator_profile_info}
-                >
+                <div className={Style.bigNFTSlider_box_left_creator_profile_info}>
                   <p>Creator</p>
                   <h4>
                     {data[idNumber].eventManager}{' '}
@@ -102,26 +96,13 @@ export const BigNFTSilder = () => {
               </div>
 
               <div className={Style.bigNFTSlider_box_left_creator_collection}>
-                <span
-                  className={
-                    Style.bigNFTSlider_box_left_creator_collection_icon
-                  }
-                >
+                <span className={Style.bigNFTSlider_box_left_creator_collection_icon}>
                   <AiFillFire />
                 </span>
-                {/* <div className={Style.bigNFTSlider_box_left_creator_collection_info}>
-                <p>Collection</p>
-                <h4>{data[idNumber].collection}</h4>
-              </div> */}
               </div>
             </div>
 
             <div className={Style.bigNFTSlider_box_left_bidding}>
-              <div className={Style.bigNFTSlider_box_left_bidding_box}>
-                <small>Current Bid</small>
-                {/* <p>{data[idNumber].priceUnit} ETH</p> */}
-              </div>
-
               <p className={Style.bigNFTSlider_box_left_bidding_box_auction}>
                 <span className={Style.bigNFTSlider_box_left_bidding_box_icon}>
                   <MdTimer />
@@ -130,30 +111,22 @@ export const BigNFTSilder = () => {
               </p>
 
               <div className={Style.bigNFTSlider_box_left_bidding_box_timer}>
-                <div
-                  className={Style.bigNFTSlider_box_left_bidding_box_timer_item}
-                >
+                <div className={Style.bigNFTSlider_box_left_bidding_box_timer_item}>
                   <p>{day}</p>
                   <span>Days</span>
                 </div>
 
-                <div
-                  className={Style.bigNFTSlider_box_left_bidding_box_timer_item}
-                >
+                <div className={Style.bigNFTSlider_box_left_bidding_box_timer_item}>
                   <p>{hour}</p>
                   <span>Hours</span>
                 </div>
 
-                <div
-                  className={Style.bigNFTSlider_box_left_bidding_box_timer_item}
-                >
+                <div className={Style.bigNFTSlider_box_left_bidding_box_timer_item}>
                   <p>{minute}</p>
                   <span>mins</span>
                 </div>
 
-                <div
-                  className={Style.bigNFTSlider_box_left_bidding_box_timer_item}
-                >
+                <div className={Style.bigNFTSlider_box_left_bidding_box_timer_item}>
                   <p>{seconds}</p>
                   <span>secs</span>
                 </div>
@@ -174,16 +147,10 @@ export const BigNFTSilder = () => {
             </div>
 
             <div className={Style.bigNFTSlider_box_left_sliderBtn}>
-              <span
-                className={Style.bigNFTSlider_box_left_sliderBtn_icon}
-                onClick={() => dec()}
-              >
+              <span className={Style.bigNFTSlider_box_left_sliderBtn_icon} onClick={() => dec()}>
                 <TbArrowBigLeftLines />
               </span>
-              <span
-                className={Style.bigNFTSlider_box_left_sliderBtn_icon}
-                onClick={() => inc()}
-              >
+              <span className={Style.bigNFTSlider_box_left_sliderBtn_icon} onClick={() => inc()}>
                 <TbArrowBigRightLine />
               </span>
             </div>
@@ -198,11 +165,6 @@ export const BigNFTSilder = () => {
                 height={860}
                 className={Style.bigNFTSlider_box_right_box_img}
               />
-
-              {/* <div className={Style.bigNFTSlider_box_right_box_like}>
-              <AiFillHeart />
-              <span>{sliderData[idNumber].like}</span>
-            </div> */}
             </div>
           </div>
         </div>

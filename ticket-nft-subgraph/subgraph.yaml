@@ -7,7 +7,7 @@ dataSources:
     network: localhost
     source:
       abi: Event
-      address: "0x95401dc811bb5740090279Ba06cfA8fcF6113778"
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -29,7 +29,7 @@ dataSources:
     network: localhost
     source:
       abi: TicketType
-      address: "0x998abeb3E57409262aE5b751f60747921B33613E"
+      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

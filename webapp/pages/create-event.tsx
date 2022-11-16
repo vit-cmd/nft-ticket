@@ -3,7 +3,7 @@ import React from 'react';
 //INTERNAL IMPORT
 import Style from '../styles/create-event.module.css';
 import {CreateEvent as CreateEventNFT} from '../components';
-import { ConnectionContext } from '../Context';
+import {ConnectionContext} from '../Context';
 
 const CreateEvent: React.FC<Props> = () => {
   const {eventManager} = React.useContext(ConnectionContext);
@@ -11,14 +11,14 @@ const CreateEvent: React.FC<Props> = () => {
   if (!eventManager) {
     return (
       <div className={Style.uploadNFT}>
-      <div className={Style.uploadNFT_box}>
-        <div className={Style.uploadNFT_box_heading}>
-          <h1>You do not have permission to access this page</h1>
+        <div className={Style.uploadNFT_box}>
+          <div className={Style.uploadNFT_box_heading}>
+            <h1>You do not have permission to access this page</h1>
+          </div>
         </div>
       </div>
-    </div>
     );
-  } 
+  }
 
   return (
     <div className={Style.uploadNFT}>

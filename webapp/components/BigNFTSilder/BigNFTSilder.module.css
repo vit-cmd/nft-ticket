@@ -9,7 +9,7 @@
 }
 
 .bigNFTSlider_box_left {
-  display: flex;
+  display: grid;
   flex-direction: column;
   grid-column: 1 / 7;
   grid-row: 1 / -1;
