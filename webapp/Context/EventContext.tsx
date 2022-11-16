@@ -1,9 +1,9 @@
-import { Props } from "next/script";
-import React from "react";
-import EventSol from "../../@artifacts/contracts/Event.sol/Event.json";
-import { Event } from "../../@types/contracts/Event";
-import { connectContract } from "./ConnectionContext";
-import { ethers } from "ethers";
+import { Props } from 'next/script';
+import React from 'react';
+import EventSol from '../../@artifacts/contracts/Event.sol/Event.json';
+import { Event } from '../../@types/contracts/Event';
+import { connectContract } from './ConnectionContext';
+import { ethers } from 'ethers';
 
 export interface IEventContext {
   approveOrDisableEventManager(
@@ -48,7 +48,7 @@ export const EventProvider: React.FC<Props> = ({ children }) => {
         _status
       );
       await transaction.wait();
-      const actionName = _status === true ? "Approve" : "Disable";
+      const actionName = _status === true ? 'Approve' : 'Disable';
       alert(`${actionName} successfully`);
     } catch (error: any) {
       console.log(error.message);
@@ -64,7 +64,6 @@ export const EventProvider: React.FC<Props> = ({ children }) => {
     location: string,
     description: string,
     hashImage: string,
-    price: number,
     startDay: number,
     endDay: number
   ): Promise<void> => {
@@ -81,14 +80,13 @@ export const EventProvider: React.FC<Props> = ({ children }) => {
         location,
         description,
         hashImage,
-        price,
         startDay,
         endDay
       );
       await transaction.wait();
-      alert("Create event successfully");
+      alert('Create event successfully');
     } catch (error) {
-      console.error("Error: ", error);
+      console.error('Error: ', error);
     }
   };
 

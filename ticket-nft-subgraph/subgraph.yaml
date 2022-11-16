@@ -7,7 +7,7 @@ dataSources:
     network: localhost
     source:
       abi: Event
-      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
+      address: "0x9A676e781A523b5d0C0e43731313A708CB607508"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -19,7 +19,7 @@ dataSources:
         - name: Event
           file: ./abis/Event.json
       eventHandlers:
-        - event: NewEvent(uint256,string,string,string,string,address,uint64,uint256,uint256)
+        - event: NewEvent(uint256,string,string,string,string,address,uint256,uint256)
           handler: handleNewEvent
         - event: UpdateAprroveEventManager(address,bool)
           handler: handlerUpdateAprroveEventManager
@@ -30,8 +30,8 @@ dataSources:
     name: TicketType
     network: localhost
     source:
-      address: "0x9E545E3C0baAB3E08CdfD552C960A1050f373042"
       abi: TicketType
+      address: "0x0B306BF915C4d645ff596e518fAf3F9669b97016"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

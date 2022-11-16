@@ -40,12 +40,6 @@
       },
       {
         "indexed": false,
-        "internalType": "uint64",
-        "name": "priceUnit",
-        "type": "uint64"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "startDay",
         "type": "uint256"
@@ -143,11 +137,6 @@
         "internalType": "string",
         "name": "image_",
         "type": "string"
-      },
-      {
-        "internalType": "uint64",
-        "name": "priceUnit_",
-        "type": "uint64"
       },
       {
         "internalType": "uint256",

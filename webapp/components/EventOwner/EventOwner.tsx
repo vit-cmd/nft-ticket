@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button } from "../Button/Button";
-import { IConnection, IEventContext } from "../../Context";
-import { ethers } from "ethers";
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import React, { useEffect, useRef, useState } from 'react';
+import { Button } from '../Button/Button';
+import { IConnection, IEventContext } from '../../Context';
+import { ethers } from 'ethers';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { AiFillLike, AiFillDislike } from 'react-icons/ai';
 //INTERNAL IMPORT
-import Style from "./EventOwner.module.css";
-import { IconContext } from "react-icons";
+import Style from './EventOwner.module.css';
+import { IconContext } from 'react-icons';
 
 interface IEventManagerData {
   id: string;
@@ -14,12 +14,16 @@ interface IEventManagerData {
 }
 
 const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
-  const { approveOrDisableEventManager, provider } = props;
+  const {
+    approveOrDisableEventManager,
+    provider,
+    setEventManager,
+    currentAccount,
+  } = props;
   const modalContentRef = useRef(null);
   const [isModalOpen, setOpenModal] = useState(false);
-  const [address, setAddress] = useState("");
-  const [eventManagers, setEventManagers] = useState<IEventManagerData[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [address, setAddress] = useState('');
+  const [data, setData] = useState<IEventManagerData[]>([]);
   const [reRenderUI, setRerenderUI] = useState(false);
 
   const APIURL = process.env.NEXT_PUBLIC_SUBGRAPH_API_URL;
@@ -31,17 +35,6 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
 
   const query = `
   query {
-    events {
-      id
-      name
-      location
-      hashImage
-      eventManager
-      description
-      priceUnit
-      startDay
-      endDay
-    }
     eventManagers {
       id
       approve
@@ -55,12 +48,11 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
         query: gql(query),
       })
       .then((data: any) => {
-        console.log("Subgraph data: ", data);
-        setEventManagers(data.data.eventManagers);
-        setLoading(data.loading);
+        console.log('Subgraph data: ', data);
+        setData(data.data.eventManagers);
       })
       .catch((err) => {
-        console.log("Error fetching data: ", err);
+        console.log('Error fetching data: ', err);
       });
   }, [reRenderUI]);
 
@@ -71,17 +63,18 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
   };
 
   const handleOnSubmit = async (): Promise<void> => {
-    if (address == "") {
-      alert("Please enter address");
+    if (address == '') {
+      alert('Please enter address');
       return;
     }
     if (!ethers.utils.isAddress(address)) {
-      alert("Please enter valid address!");
+      alert('Please enter valid address!');
       return;
     }
     await approveOrDisableEventManager!(provider!, address, true);
-    setAddress("");
+    setAddress('');
     setRerenderUI(!reRenderUI);
+    reRenderNavBar(address, true);
   };
 
   const handleOnClickIcon = async (
@@ -90,6 +83,12 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
   ): Promise<void> => {
     await approveOrDisableEventManager!(provider!, address, value);
     setRerenderUI(!reRenderUI);
+    reRenderNavBar(address, value);
+  };
+
+  const reRenderNavBar = (address: string, value: boolean) => {
+    if (currentAccount?.toLowerCase() == address.toLowerCase())
+      setEventManager!(value);
   };
 
   return (
@@ -103,16 +102,15 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
           ></Button>
         </div>
         <div className={Style.eventOwner_container_body}>
-          {loading && <p>Loading...</p>}
           <table id={Style.eventmanagers}>
             <tr>
               <th>Address</th>
               <th>Aprrove</th>
               <th>Action</th>
             </tr>
-            {eventManagers &&
-              eventManagers.length > 0 &&
-              eventManagers.map((value: IEventManagerData) => (
+            {data &&
+              data.length > 0 &&
+              data.map((value: IEventManagerData) => (
                 <tr key={value.id}>
                   <td>{value.id}</td>
                   <td
@@ -123,9 +121,9 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
                     {String(value.approve.valueOf())}
                   </td>
                   <td>
-                    <IconContext.Provider value={{ size: "2rem" }}>
+                    <IconContext.Provider value={{ size: '2rem' }}>
                       <span
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: 'pointer' }}
                         onClick={() =>
                           handleOnClickIcon(value.id, !value.approve)
                         }
@@ -150,7 +148,7 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
                 className={Style.modal_header_icon}
                 onClick={() => {
                   setOpenModal(false);
-                  setAddress("");
+                  setAddress('');
                 }}
               >
                 X
@@ -172,7 +170,7 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
                 btnName="Cancel"
                 handleClick={() => {
                   setOpenModal(false);
-                  setAddress("");
+                  setAddress('');
                 }}
                 classStyle={Style.btn_cancel}
               ></Button>

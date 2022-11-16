@@ -1,8 +1,8 @@
-import { ethers } from "ethers";
-import { Props } from "next/script";
-import React, { useCallback, useEffect, useState } from "react";
-import { Event } from "../../@types/contracts/Event";
-import EventSol from "../../@artifacts/contracts/Event.sol/Event.json";
+import { ethers } from 'ethers';
+import { Props } from 'next/script';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Event } from '../../@types/contracts/Event';
+import EventSol from '../../@artifacts/contracts/Event.sol/Event.json';
 
 export interface IConnection {
   // variable
@@ -16,6 +16,7 @@ export interface IConnection {
   // state
   setError: React.Dispatch<React.SetStateAction<string>>;
   setOpenError: React.Dispatch<React.SetStateAction<boolean>>;
+  setEventManager: React.Dispatch<React.SetStateAction<boolean>>;
   // function
   connectWallet(): Promise<void>;
   checkEventManager(
@@ -41,10 +42,10 @@ export function connectContract(
 
 export const ConnectionProvider: React.FC<Props> = ({ children }) => {
   //------USESTATE
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [openError, setOpenError] = useState<boolean>(false);
-  const [currentAccount, setCurrentAccount] = useState<string>("");
-  const [accountBalance, setAccountBalance] = useState<string>("");
+  const [currentAccount, setCurrentAccount] = useState<string>('');
+  const [accountBalance, setAccountBalance] = useState<string>('');
   const [admin, setAdmin] = useState<boolean>(false);
   const [eventManager, setEventManager] = useState<boolean>(false);
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
@@ -55,8 +56,8 @@ export const ConnectionProvider: React.FC<Props> = ({ children }) => {
     if (!ethereum) {
       return;
     }
-    ethereum.on("accountsChanged", async (accounts: string[]) => {
-      const _currentAccount = accounts[0] ?? "";
+    ethereum.on('accountsChanged', async (accounts: string[]) => {
+      const _currentAccount = accounts[0] ?? '';
       setCurrentAccount(_currentAccount);
       if (provider && _currentAccount) {
         const balanceBigNumber = await provider.getBalance(_currentAccount);
@@ -76,13 +77,13 @@ export const ConnectionProvider: React.FC<Props> = ({ children }) => {
     const { ethereum } = window as any;
     if (!ethereum) {
       setOpenError(true);
-      setError("Install MetaMask");
+      setError('Install MetaMask');
       return;
     }
 
     const _provider = new ethers.providers.Web3Provider(ethereum);
     const accounts = await ethereum.request({
-      method: "eth_requestAccounts",
+      method: 'eth_requestAccounts',
     });
     const balanceBigNumber = await _provider.getBalance(accounts[0]);
     const balance = ethers.utils.formatEther(balanceBigNumber);
@@ -132,6 +133,7 @@ export const ConnectionProvider: React.FC<Props> = ({ children }) => {
     openError,
     error,
     setError,
+    setEventManager,
     eventManager,
     setOpenError,
     connectWallet,
