@@ -5,7 +5,6 @@ type Event @entity {
   description: String!
   hashImage: String!
   eventManager: Bytes! # address
-  priceUnit: BigInt!
   startDay: BigInt!
   endDay: BigInt!
 }
@@ -13,4 +12,14 @@ type Event @entity {
 type EventManager @entity {
   id: ID!
   approve: Boolean!
+}
+type NewTicketType @entity {
+  id: ID!
+  eventId: BigInt! # uint256
+  name: String! # string
+  description: String! # string
+  hashImage: String! # string
+  currentMintTickets: BigInt! # uint64
+  maxTicketCount: BigInt! # uint64
+  priceFactor: BigInt! # uint64
 }

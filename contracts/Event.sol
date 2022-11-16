@@ -15,7 +15,6 @@ contract Event is Ownable {
         string description;
         string hashImage;
         address eventManager;
-        uint64 priceUnit;
         uint256 startDay;
         uint256 endDay;
         bool disable;
@@ -112,7 +111,6 @@ contract Event is Ownable {
         events[currentEventId].description = description_;
         events[currentEventId].hashImage = image_;
         events[currentEventId].eventManager = msg.sender;
-        events[currentEventId].priceUnit = priceUnit_;
         events[currentEventId].startDay = startDate_;
         events[currentEventId].endDay = endDate_;
         events[currentEventId].disable = false;
@@ -139,5 +137,16 @@ contract Event is Ownable {
         returns (bool)
     {
         return approvedEventManager[address_];
+    }
+
+    function isOwnerOfEvent(uint256 eventId_ )
+        external
+        view
+        returns (bool)
+    {
+        if(events[eventId_].eventManager == msg.sender) {
+            return true;
+        }
+        return false;
     }
 }

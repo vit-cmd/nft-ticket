@@ -10,12 +10,10 @@ export function handleNewEvent(event: NewEvent): void {
 
   // Entity fields can be set based on event parameters
   entity.name = event.params.name;
-  entity.location = event.params.location;
   entity.eventManager = event.params.eventManager;
   entity.location = event.params.location;
   entity.description = event.params.description;
   entity.hashImage = event.params.hashImage;
-  entity.priceUnit = event.params.priceUnit;
   entity.startDay = event.params.startDay;
   entity.endDay = event.params.endDay;
 

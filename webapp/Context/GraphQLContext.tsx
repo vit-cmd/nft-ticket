@@ -21,7 +21,7 @@ export const GraphQLProvider = (props: {children: any}) => {
     
     const query = gql`
       query {
-        events(orderBy: endDay, orderDirection: asc, where: {endDay_gt: "${Math.floor(now() / 1000)}"}) {
+        events(orderBy: endDay, orderDirection: asc, where: {endDay_gt: "${Math.floor(now() / 100)}"}) {
           description
           endDay
           eventManager
