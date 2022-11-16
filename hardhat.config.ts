@@ -1,63 +1,65 @@
-import { task } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
-import "@graphprotocol/hardhat-graph";
+import {task} from 'hardhat/config';
+import '@nomicfoundation/hardhat-toolbox';
+import '@graphprotocol/hardhat-graph';
+import * as dotenv from 'dotenv';
+dotenv.config({path: __dirname + '/webapp/.env'});
 
-task("deploy", "Deploys the passed contract")
+task('deploy', 'Deploys the passed contract')
   .addParam("contractName", "The name of the contract")
   .setAction(async (taskArgs, hre) => {
-    const { contractName } = taskArgs;
 
-    await hre.run("compile");
+    await hre.run('compile');
 
-    const address = await deploy(hre, contractName);
+    // Contract event
+    const eventArtifacts = await hre.ethers.getContractFactory('Event');
+    const eventContract = await eventArtifacts.deploy();
+    const addressEvent = eventContract.address;
+    const eventContractName = 'Event';
+    console.log(`Contract Event deployed to: ${eventContract.address}`);
 
-    await hre.run("graph", { contractName, address });
+    const ticketTypeArtifacts = await hre.ethers.getContractFactory('TicketType');
+    const ticketTypeContract = await ticketTypeArtifacts.deploy(addressEvent);
+    const addressTicketType = ticketTypeContract.address;
+    const ticketTypeContractName = 'TicketType';
+    console.log(`Contract TicketType deployed to: ${ticketTypeContract.address}`);
+
+    await hre.run('graph', {address: addressTicketType, contractName: ticketTypeContractName});
+    await hre.run('graph', {address: addressEvent, contractName: eventContractName});
   });
 
-const deploy = async (hre: any, contractName: string): Promise<string> => {
-  const contractArtifacts = await hre.ethers.getContractFactory(contractName);
-  const contract = await contractArtifacts.deploy();
-
-  await contract.deployed();
-
-  console.log(`${contractName} deployed to: ${contract.address}`);
-
-  return contract.address;
-};
-
 const config = {
-  solidity: "0.8.17",
+  solidity: '0.8.17',
   paths: {
-    artifacts: "@artifacts",
-    subgraph: "ticket-nft-subgraph",
+    artifacts: '@artifacts',
+    subgraph: 'ticket-nft-subgraph'
   },
   typechain: {
-    outDir: "@types",
-    target: "ethers-v5",
+    outDir: '@types',
+    target: 'ethers-v5',
     alwaysGenerateOverloads: false, // should overloads with full signatures like deposit(uint256) be generated always, even if there are no overloads?
-    externalArtifacts: [], // optional array of glob patterns with external artifacts to process (for example external libs from node_modules)
+    externalArtifacts: [] // optional array of glob patterns with external artifacts to process (for example external libs from node_modules)
   },
-  defaultNetwork: "localhost",
+  defaultNetwork: 'localhost',
   networks: {
     localhost: {
-      url: "http://localhost:8545",
+      url: 'http://localhost:8545'
     },
     hardhat: {
       chainId: 1337,
-      initialBaseFeePerGas: 0, // workaround from https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136 . Remove when that issue is closed.
-    },
+      initialBaseFeePerGas: 0 // workaround from https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136 . Remove when that issue is closed.
+    }
   },
   // config subgraph
   subgraph: {
-    name: "ticket-nft",
+    name: 'ticket-nft'
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
-    currency: "USD",
+    currency: 'USD'
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
-  },
+    apiKey: process.env.ETHERSCAN_API_KEY
+  }
 };
 
 export default config;

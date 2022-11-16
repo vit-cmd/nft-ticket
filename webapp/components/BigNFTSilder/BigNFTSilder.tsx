@@ -68,7 +68,7 @@ export const BigNFTSilder = () => {
     }
   }, [idNumber]);
 
-  if (!data || data.length === 0) return <LoadingSpinner />;
+  if (!data || data.length === 0) return;
   else {
     return (
       <div className={Style.bigNFTSlider}>

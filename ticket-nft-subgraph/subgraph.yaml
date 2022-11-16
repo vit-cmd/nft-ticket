@@ -7,7 +7,7 @@ dataSources:
     network: localhost
     source:
       abi: Event
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -26,3 +26,22 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: ./src/event.ts
+  - kind: ethereum
+    name: TicketType
+    network: localhost
+    source:
+      address: "0x9E545E3C0baAB3E08CdfD552C960A1050f373042"
+      abi: TicketType
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - NewTicketType
+      abis:
+        - name: TicketType
+          file: ./abis/TicketType.json
+      eventHandlers:
+        - event: NewTicketType(uint256,string,string,string,uint64,uint64,uint64)
+          handler: handleNewTicketType
+      file: ./src/ticket-type.ts
