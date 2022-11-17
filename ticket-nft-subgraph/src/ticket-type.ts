@@ -10,5 +10,6 @@ export function handleNewTicketType(event: NewTicketType): void {
   entity.currentMintTickets = event.params.currentMintTickets;
   entity.maxTicketCount = event.params.maxTicketCount;
   entity.priceFactor = event.params.priceFactor;
+  entity.event = event.params.eventID.toString();
   entity.save();
 }

@@ -7,11 +7,7 @@ type Event @entity {
   eventManager: Bytes! # address
   startDay: BigInt!
   endDay: BigInt!
-}
-
-type EventManager @entity {
-  id: ID!
-  approve: Boolean!
+  ticketTypes: [TicketType!]! @derivedFrom(field: "event")
 }
 
 type TicketType @entity {
@@ -23,10 +19,18 @@ type TicketType @entity {
   currentMintTickets: BigInt! # uint64
   maxTicketCount: BigInt! # uint64
   priceFactor: BigInt! # uint64
+  event: Event!
+  tickets: [Ticket!]! @derivedFrom(field: "ticketType")
 }
 
 type Ticket @entity {
   id: ID!
   eventID: BigInt! # uint256
   ticketTypeID: BigInt! # uint256
+  ticketType: TicketType!
+}
+
+type EventManager @entity {
+  id: ID!
+  approve: Boolean!
 }

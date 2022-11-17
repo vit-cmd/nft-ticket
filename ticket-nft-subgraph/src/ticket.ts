@@ -8,6 +8,7 @@ export function handleNewTicket(event: NewTicket): void {
   let entity = new Ticket(event.params.ticketID.toString());
   entity.eventID = event.params.eventID;
   entity.ticketTypeID = event.params.ticketTypeID;
+  entity.ticketType = event.params.ticketTypeID.toString();
   entity.save();
 }
 
