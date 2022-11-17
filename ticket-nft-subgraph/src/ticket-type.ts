@@ -2,9 +2,7 @@ import { NewTicketType } from '../generated/TicketType/TicketType';
 import { TicketType } from '../generated/schema';
 
 export function handleNewTicketType(event: NewTicketType): void {
-  let entity = new TicketType(
-    event.transaction.hash.toHex() + '-' + event.logIndex.toString()
-  );
+  let entity = new TicketType(event.params.ticketTypeID.toString());
   entity.eventID = event.params.eventID;
   entity.name = event.params.name;
   entity.description = event.params.description;

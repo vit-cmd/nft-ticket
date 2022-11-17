@@ -28,6 +28,7 @@ contract TicketType {
     mapping(uint256 => TicketTypeData) public ticketTypes;
 
     event NewTicketType(
+        uint256 ticketTypeID,
         uint256 eventID,
         string name,
         string description,
@@ -78,6 +79,7 @@ contract TicketType {
         ticketTypeIDs.increment();
 
         emit NewTicketType(
+            currentTicketTypeID,
             eventID_,
             name_,
             description_,

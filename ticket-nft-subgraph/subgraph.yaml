@@ -7,7 +7,7 @@ dataSources:
     network: localhost
     source:
       abi: Event
-      address: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318"
+      address: "0x95401dc811bb5740090279Ba06cfA8fcF6113778"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -29,7 +29,7 @@ dataSources:
     network: localhost
     source:
       abi: TicketType
-      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
+      address: "0x998abeb3E57409262aE5b751f60747921B33613E"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -40,7 +40,7 @@ dataSources:
         - name: TicketType
           file: ./abis/TicketType.json
       eventHandlers:
-        - event: NewTicketType(uint256,string,string,string,uint64,uint64,uint64)
+        - event: NewTicketType(uint256,uint256,string,string,string,uint64,uint64,uint64)
           handler: handleNewTicketType
       file: ./src/ticket-type.ts
   - kind: ethereum
@@ -48,7 +48,7 @@ dataSources:
     network: localhost
     source:
       abi: Ticket
-      address: "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e"
+      address: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

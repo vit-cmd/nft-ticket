@@ -73,8 +73,10 @@ contract Ticket is ERC721 {
         tickets[currentTicketID].eventID = eventID_;
         tickets[currentTicketID].ticketTypeID = ticketTypeID_;
 
+        uint64 currentMintedTicket = ++currentMintTickets;
+
         // update currentMintTickes in mapping ticket type
-        tktType.updateCurrentMintTicket(ticketTypeID_, ++currentMintTickets);
+        tktType.updateCurrentMintTicket(ticketTypeID_, currentMintedTicket);
         ticketIDs.increment();
 
         console.log("Minted ticket with id: ", currentTicketID);
@@ -82,7 +84,7 @@ contract Ticket is ERC721 {
         emit NewTicket(eventID_, ticketTypeID_, currentTicketID);
         emit UpdateCurrentMintedTicketInTicketType(
             ticketTypeID_,
-            currentMintTickets++
+            currentMintedTicket
         );
     }
 }

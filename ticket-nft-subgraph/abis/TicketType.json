@@ -16,6 +16,12 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "ticketTypeID",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "eventID",
         "type": "uint256"
       },
