@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useContext} from 'react';
 import Image from 'next/image';
-import {AiFillFire, AiFillHeart} from 'react-icons/ai';
+import {AiFillFire} from 'react-icons/ai';
 import {BiDetail} from 'react-icons/bi';
 import {MdVerified, MdTimer} from 'react-icons/md';
 import {TbArrowBigLeftLines, TbArrowBigRightLine} from 'react-icons/tb';
@@ -8,20 +8,11 @@ import {TbArrowBigLeftLines, TbArrowBigRightLine} from 'react-icons/tb';
 //INTERNAL IMPORT
 import Style from './BigNFTSilder.module.css';
 import images from '../../img';
-import {Button, LoadingSpinner} from '../../components';
+import {Button} from '../../components';
 import {GraphQLContext} from '../../Context';
 import {IEvent} from '../../constants/interfaces';
 import {now} from 'moment';
-
-const getReturnValues = (countDown: number) => {
-  // calculate time left
-  const days = Math.floor(countDown / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((countDown % (1000 * 60)) / 1000);
-
-  return [days, hours, minutes, seconds];
-};
+import { Router, useRouter } from 'next/router';
 
 export const BigNFTSilder = () => {
   const [idNumber, setIdNumber] = useState(0);
@@ -31,6 +22,8 @@ export const BigNFTSilder = () => {
   const [minute, setMinute] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
   const {getEvents} = useContext(GraphQLContext);
+
+  const router = useRouter();
 
   React.useEffect(() => {
     const getData = async () => {
@@ -142,7 +135,7 @@ export const BigNFTSilder = () => {
 
               <div className={Style.bigNFTSlider_box_left_button}>
                 <Button btnName="Place" handleClick={() => {}} />
-                <Button btnName="View" handleClick={() => {}} />
+                <Button btnName="View" handleClick={() => {router.push(`/event-details/${data[idNumber].id}`)}} />
               </div>
             </div>
 

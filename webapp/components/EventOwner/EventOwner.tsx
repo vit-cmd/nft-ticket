@@ -13,13 +13,6 @@ interface IEventManagerData {
   approve: boolean;
 }
 
-const APIURL = process.env.NEXT_PUBLIC_SUBGRAPH_API_URL;
-
-const client = new ApolloClient({
-  uri: APIURL,
-  cache: new InMemoryCache()
-});
-
 const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
   const {approveOrDisableEventManager, provider, setEventManager, currentAccount} = props;
   const modalContentRef = useRef(null);
@@ -37,6 +30,13 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
   }
 `;
 
+  const APIURL = process.env.NEXT_PUBLIC_SUBGRAPH_API_URL;
+
+  const client = new ApolloClient({
+    uri: APIURL,
+    cache: new InMemoryCache()
+  });
+
   useEffect(() => {
     client
       .query({
@@ -49,7 +49,8 @@ const ListEventOwner = (props: Partial<IConnection & IEventContext>) => {
       .catch((err) => {
         console.log('Error fetching data: ', err);
       });
-  }, [query, reRenderUI]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reRenderUI]);
 
   const handleOnChangeInputAddress = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setAddress(e.target.value);
