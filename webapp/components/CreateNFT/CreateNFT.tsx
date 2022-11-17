@@ -1,14 +1,13 @@
 import React from 'react';
-import {MdPriceChange} from 'react-icons/md';
-import {FaCalendarDay} from 'react-icons/fa';
-import {GoLocation} from 'react-icons/go';
-import {RiText} from 'react-icons/ri';
+import { FaCalendarDay } from 'react-icons/fa';
+import { GoLocation } from 'react-icons/go';
+import { RiText } from 'react-icons/ri';
 //INTERNAL IMPORT
 import Style from './CreateNFT.module.css';
-import {Button, Error} from '../../components';
-import {UploadImage} from './UploadImage/UploadImage';
+import { Button, Error } from '../../components';
+import { UploadImage } from './UploadImage/UploadImage';
 import moment from 'moment';
-import {ConnectionContext, EventContext, IPFSContext} from '../../Context';
+import { ConnectionContext, EventContext, IPFSContext } from '../../Context';
 
 export const CreateEvent = () => {
   const [eventName, setEventName] = React.useState<string>();
@@ -18,9 +17,10 @@ export const CreateEvent = () => {
   const [endDay, setEndDay] = React.useState<number>();
   const [file, setFile] = React.useState<File>();
 
-  const {uploadImage} = React.useContext(IPFSContext);
-  const {setOpenError, setError, provider} = React.useContext(ConnectionContext);
-  const {createEvent} = React.useContext(EventContext);
+  const { uploadImage } = React.useContext(IPFSContext);
+  const { setOpenError, setError, provider } =
+    React.useContext(ConnectionContext);
+  const { createEvent } = React.useContext(EventContext);
 
   const handleCreateEvent = async () => {
     if (!provider) {
@@ -29,7 +29,14 @@ export const CreateEvent = () => {
       return;
     }
 
-    if (!file || !eventName || !location || !description || !startDay || !endDay) {
+    if (
+      !file ||
+      !eventName ||
+      !location ||
+      !description ||
+      !startDay ||
+      !endDay
+    ) {
       setOpenError(true);
       setError('Please enter all fields');
       <Error />;
@@ -42,7 +49,15 @@ export const CreateEvent = () => {
     }
 
     const hash = await uploadImage(file!);
-    await createEvent(provider, eventName, location, description, hash, startDay, endDay);
+    await createEvent(
+      provider,
+      eventName,
+      location,
+      description,
+      hash,
+      startDay,
+      endDay
+    );
   };
 
   return (
@@ -57,7 +72,11 @@ export const CreateEvent = () => {
             <div className={Style.Form_box_input_box_icon}>
               <RiText />
             </div>
-            <input type="text" placeholder="event name" onChange={(e) => setEventName(e.target.value)} />
+            <input
+              type="text"
+              placeholder="event name"
+              onChange={(e) => setEventName(e.target.value)}
+            />
           </div>
         </div>
 
@@ -67,7 +86,11 @@ export const CreateEvent = () => {
             <div className={Style.Form_box_input_box_icon}>
               <GoLocation />
             </div>
-            <input type="text" placeholder="location" onChange={(e) => setLocation(e.target.value)} />
+            <input
+              type="text"
+              placeholder="location"
+              onChange={(e) => setLocation(e.target.value)}
+            />
           </div>
         </div>
 

@@ -16,7 +16,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "eventId",
+        "name": "eventID",
         "type": "uint256"
       },
       {
@@ -62,9 +62,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint64",
-        "name": "eventId_",
-        "type": "uint64"
+        "internalType": "uint256",
+        "name": "eventID_",
+        "type": "uint256"
       },
       {
         "internalType": "string",
@@ -100,6 +100,131 @@
         "type": "uint256"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "ticketTypeID_",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTicketTypeData",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "currentMintTickets",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "maxTicketCount",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "priceFactor",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "eventID_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ticketTypeID_",
+        "type": "uint256"
+      }
+    ],
+    "name": "isTicketTypeEventExist",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "ticketTypes",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "eventID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "hashImage",
+        "type": "string"
+      },
+      {
+        "internalType": "uint64",
+        "name": "currentMintTickets",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "maxTicketCount",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "priceFactor",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bool",
+        "name": "exist",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "ticketTypeID_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "currentMintTickets_",
+        "type": "uint64"
+      }
+    ],
+    "name": "updateCurrentMintTicket",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   }

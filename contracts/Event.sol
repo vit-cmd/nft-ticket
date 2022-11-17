@@ -7,7 +7,7 @@ import "hardhat/console.sol";
 
 contract Event is Ownable {
     using Counters for Counters.Counter;
-    Counters.Counter private eventIds;
+    Counters.Counter private eventIDs;
 
     struct EventData {
         string name;
@@ -17,14 +17,14 @@ contract Event is Ownable {
         address eventManager;
         uint256 startDay;
         uint256 endDay;
-        bool disable;
+        bool exist;
     }
 
     mapping(uint256 => EventData) private events; // Each event of event manager
     mapping(address => bool) private approvedEventManager;
 
     event NewEvent(
-        uint256 eventId,
+        uint256 eventID,
         string name,
         string location,
         string description,
@@ -92,7 +92,7 @@ contract Event is Ownable {
      * @notice isEventManager modifier should be invoked
      * @notice params is data of event struct
      * @notice emit NewEvent after create event
-     * @return eventId
+     * @return eventID
      */
     function createEvent(
         string memory name_,
@@ -102,20 +102,23 @@ contract Event is Ownable {
         uint256 startDate_,
         uint256 endDate_
     ) external payable isEventManager returns (uint256) {
-        uint256 currentEventId = eventIds.current();
+        uint256 currentEventID = eventIDs.current();
 
-        events[currentEventId].name = name_;
-        events[currentEventId].location = location_;
-        events[currentEventId].description = description_;
-        events[currentEventId].hashImage = image_;
-        events[currentEventId].eventManager = msg.sender;
-        events[currentEventId].startDay = startDate_;
-        events[currentEventId].endDay = endDate_;
-        events[currentEventId].disable = false;
-        eventIds.increment();
+        events[currentEventID] = EventData(
+            name_,
+            location_,
+            description_,
+            image_,
+            msg.sender,
+            startDate_,
+            endDate_,
+            true
+        );
+
+        eventIDs.increment();
 
         emit NewEvent(
-            currentEventId,
+            currentEventID,
             name_,
             location_,
             description_,
@@ -124,8 +127,8 @@ contract Event is Ownable {
             startDate_,
             endDate_
         );
-        console.log("Create event with id: ", currentEventId);
-        return currentEventId;
+        console.log("Create event with id: ", currentEventID);
+        return currentEventID;
     }
 
     function getApprovedEventManager(address address_)
@@ -136,10 +139,17 @@ contract Event is Ownable {
         return approvedEventManager[address_];
     }
 
-    function isOwnerOfEvent(uint256 eventId_) external view returns (bool) {
+    function isOwnerOfEvent(uint256 eventID_) external view returns (bool) {
         console.log("Origin sender: ", tx.origin);
-        console.log("EventManager: ", events[eventId_].eventManager);
-        if (events[eventId_].eventManager == tx.origin) {
+        console.log("EventManager: ", events[eventID_].eventManager);
+        if (events[eventID_].eventManager == tx.origin) {
+            return true;
+        }
+        return false;
+    }
+
+    function isEventExist(uint256 eventID_) external view returns (bool) {
+        if (events[eventID_].exist) {
             return true;
         }
         return false;

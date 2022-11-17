@@ -72,7 +72,7 @@ export const BigNFTSilder = () => {
     }
   }, [idNumber]);
 
-  if (!data || data.length === 0) return;
+  if (!data || data.length === 0) return <div></div>;
   else {
     return (
       <div className={Style.bigNFTSlider}>

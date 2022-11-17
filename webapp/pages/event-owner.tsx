@@ -4,8 +4,6 @@ import ListEventOwner from '../components/EventOwner/EventOwner';
 import { ConnectionContext, EventContext } from '../Context';
 
 const EvtOwner = () => {
-  // Use History
-  const router = useRouter();
   // Use Context
   const { currentAccount, provider, admin, setEventManager } =
     useContext(ConnectionContext);
