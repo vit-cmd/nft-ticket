@@ -1,12 +1,8 @@
-import {
-  NewEvent,
-  OwnershipTransferred,
-  UpdateAprroveEventManager,
-} from "../generated/Event/Event";
-import { Event, EventManager } from "../generated/schema";
+import { NewEvent, UpdateAprroveEventManager } from '../generated/Event/Event';
+import { Event, EventManager } from '../generated/schema';
 
 export function handleNewEvent(event: NewEvent): void {
-  let entity = new Event(event.params.eventId.toString());
+  let entity = new Event(event.params.eventID.toString());
 
   // Entity fields can be set based on event parameters
   entity.name = event.params.name;
@@ -40,8 +36,6 @@ export function handleNewEvent(event: NewEvent): void {
   // - contract.getApprovedEventManager(...)
   // - contract.owner(...)
 }
-
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
 export function handlerUpdateAprroveEventManager(
   event: UpdateAprroveEventManager

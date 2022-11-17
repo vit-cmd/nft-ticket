@@ -17,7 +17,6 @@ export interface IEventContext {
     location: string,
     description: string,
     hashImage: string,
-    price: number,
     startDay: number,
     endDay: number
   ): Promise<void>;

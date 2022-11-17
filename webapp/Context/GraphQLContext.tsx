@@ -14,7 +14,6 @@ const client = new ApolloClient({
   uri: process.env.NEXT_PUBLIC_SUBGRAPH_API_URL,
   cache: new InMemoryCache(),
 });
-
 export const GraphQLProvider = (props: { children: any }) => {
   const getEvents = async (): Promise<IEvent[]> => {
     console.log('Now: ', now());
@@ -22,7 +21,7 @@ export const GraphQLProvider = (props: { children: any }) => {
     const query = gql`
       query {
         events(orderBy: endDay, orderDirection: asc, where: {endDay_gt: "${Math.floor(
-          now() / 100
+          now() / 1000
         )}"}) {
           description
           endDay

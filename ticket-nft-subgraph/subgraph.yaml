@@ -7,14 +7,14 @@ dataSources:
     network: localhost
     source:
       abi: Event
-      address: "0x9A676e781A523b5d0C0e43731313A708CB607508"
+      address: "0x95401dc811bb5740090279Ba06cfA8fcF6113778"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - NewEvent
-        - OwnershipTransferred
+        - Event
+        - EventManager
       abis:
         - name: Event
           file: ./abis/Event.json
@@ -23,25 +23,44 @@ dataSources:
           handler: handleNewEvent
         - event: UpdateAprroveEventManager(address,bool)
           handler: handlerUpdateAprroveEventManager
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
       file: ./src/event.ts
   - kind: ethereum
     name: TicketType
     network: localhost
     source:
       abi: TicketType
-      address: "0x0B306BF915C4d645ff596e518fAf3F9669b97016"
+      address: "0x998abeb3E57409262aE5b751f60747921B33613E"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - NewTicketType
+        - TicketType
       abis:
         - name: TicketType
           file: ./abis/TicketType.json
       eventHandlers:
-        - event: NewTicketType(uint256,string,string,string,uint64,uint64,uint64)
+        - event: NewTicketType(uint256,uint256,string,string,string,uint64,uint64,uint64)
           handler: handleNewTicketType
       file: ./src/ticket-type.ts
+  - kind: ethereum
+    name: Ticket
+    network: localhost
+    source:
+      abi: Ticket
+      address: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49"
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Ticket
+      abis:
+        - name: Ticket
+          file: ./abis/Ticket.json
+      eventHandlers:
+        - event: NewTicket(uint256,uint256,uint256)
+          handler: handleNewTicket
+        - event: UpdateCurrentMintedTicketInTicketType(uint256,uint64)
+          handler: handleUpdateCurrentMintedTicketInTicketType
+      file: ./src/ticket.ts

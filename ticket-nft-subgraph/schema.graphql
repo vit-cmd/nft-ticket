@@ -13,13 +13,20 @@ type EventManager @entity {
   id: ID!
   approve: Boolean!
 }
-type NewTicketType @entity {
+
+type TicketType @entity {
   id: ID!
-  eventId: BigInt! # uint256
+  eventID: BigInt! # uint256
   name: String! # string
   description: String! # string
   hashImage: String! # string
   currentMintTickets: BigInt! # uint64
   maxTicketCount: BigInt! # uint64
   priceFactor: BigInt! # uint64
+}
+
+type Ticket @entity {
+  id: ID!
+  eventID: BigInt! # uint256
+  ticketTypeID: BigInt! # uint256
 }

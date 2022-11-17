@@ -23,13 +23,26 @@ task('deploy', 'Deploys the passed contract').setAction(
       `Contract TicketType deployed to: ${ticketTypeContract.address}`
     );
 
+    const ticketArtifacts = await hre.ethers.getContractFactory('Ticket');
+    const ticketContract = await ticketArtifacts.deploy(
+      addressEvent,
+      addressTicketType
+    );
+    const addressTicket = ticketContract.address;
+    const ticketContractName = 'Ticket';
+    console.log(`Contract Ticket deployed to: ${ticketContract.address}`);
+
+    await hre.run('graph', {
+      address: addressEvent,
+      contractName: eventContractName,
+    });
     await hre.run('graph', {
       address: addressTicketType,
       contractName: ticketTypeContractName,
     });
     await hre.run('graph', {
-      address: addressEvent,
-      contractName: eventContractName,
+      address: addressTicket,
+      contractName: ticketContractName,
     });
   }
 );

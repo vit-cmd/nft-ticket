@@ -1,10 +1,13 @@
 {
   "localhost": {
     "Event": {
-      "address": "0x9A676e781A523b5d0C0e43731313A708CB607508"
+      "address": "0x95401dc811bb5740090279Ba06cfA8fcF6113778"
     },
     "TicketType": {
-      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016"
+      "address": "0x998abeb3E57409262aE5b751f60747921B33613E"
+    },
+    "Ticket": {
+      "address": "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49"
     }
   }
 }
