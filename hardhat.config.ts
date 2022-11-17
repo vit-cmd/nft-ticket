@@ -11,6 +11,9 @@ task('deploy', 'Deploys the passed contract').setAction(async (taskArgs, hre) =>
   const addressEvent = eventContract.address;
   const eventContractName = 'Event';
   console.log(`Contract Event deployed to: ${eventContract.address}`);
+  // approve event manager
+  const contract = eventArtifacts.attach(addressEvent);
+  contract.approveOrDisableEventManager('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', true);
 
   const ticketTypeArtifacts = await hre.ethers.getContractFactory('TicketType');
   const ticketTypeContract = await ticketTypeArtifacts.deploy(addressEvent);
@@ -18,29 +21,25 @@ task('deploy', 'Deploys the passed contract').setAction(async (taskArgs, hre) =>
   const ticketTypeContractName = 'TicketType';
   console.log(`Contract TicketType deployed to: ${ticketTypeContract.address}`);
 
-    const ticketArtifacts = await hre.ethers.getContractFactory('Ticket');
-    const ticketContract = await ticketArtifacts.deploy(
-      addressEvent,
-      addressTicketType
-    );
-    const addressTicket = ticketContract.address;
-    const ticketContractName = 'Ticket';
-    console.log(`Contract Ticket deployed to: ${ticketContract.address}`);
+  const ticketArtifacts = await hre.ethers.getContractFactory('Ticket');
+  const ticketContract = await ticketArtifacts.deploy(addressEvent, addressTicketType);
+  const addressTicket = ticketContract.address;
+  const ticketContractName = 'Ticket';
+  console.log(`Contract Ticket deployed to: ${ticketContract.address}`);
 
-    await hre.run('graph', {
-      address: addressEvent,
-      contractName: eventContractName,
-    });
-    await hre.run('graph', {
-      address: addressTicketType,
-      contractName: ticketTypeContractName,
-    });
-    await hre.run('graph', {
-      address: addressTicket,
-      contractName: ticketContractName,
-    });
-  }
-);
+  await hre.run('graph', {
+    address: addressEvent,
+    contractName: eventContractName
+  });
+  await hre.run('graph', {
+    address: addressTicketType,
+    contractName: ticketTypeContractName
+  });
+  await hre.run('graph', {
+    address: addressTicket,
+    contractName: ticketContractName
+  });
+});
 
 const config = {
   solidity: '0.8.17',

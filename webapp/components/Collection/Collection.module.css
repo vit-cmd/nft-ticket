@@ -89,3 +89,142 @@
     gap: 4rem;
   }
 }
+
+
+.modal {
+  position: fixed; /* Stay in place */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.88); /* Black w/ opacity */
+  z-index: 9999;
+}
+
+.modal_content {
+  width: 40%;
+  height: 50%;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  /* background-color: white; */
+  transform: translateX(-50%);
+  padding: 1rem 2rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.modal_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal_header_title {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.modal_header_icon {
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: red;
+}
+
+.modal_body {
+}
+
+.modal_body_input {
+  color: black;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  background: #ffdf2b46;
+  padding: 0.8rem 1rem;
+  width: 100%;
+  outline: none;
+  border: 1px solid var(--icons-color);
+}
+
+.modal_body_input::placeholder {
+  color: black;
+  opacity: 1; /* Firefox */
+}
+
+.modal_body_input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: black;
+}
+
+.modal_body_input::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: black;
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: center;
+  gap: 2.8rem;
+}
+
+.modal__footer button {
+  border-radius: 10px;
+}
+
+.eventOwner_container {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.eventOwner_container_heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--shadow-dark-color);
+}
+
+.eventOwner_container_heading h1 {
+  font-size: 3.5rem;
+  line-height: 0.1;
+}
+
+.eventOwner_container_heading p {
+  font-size: 1.4rem;
+  width: 70%;
+  line-height: 1.2;
+}
+
+.eventOwner_container_title {
+  border-bottom: 1px solid var(--shadow-dark-color);
+  margin-top: 4rem;
+}
+
+.eventOwner_container_title h2 {
+  font-size: 2.5rem;
+  line-height: 0;
+}
+
+.eventOwner_container_title p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+@media screen and (max-width: 35em) {
+  .eventOwner_container {
+    width: 90%;
+  }
+  .eventOwner_container_heading p {
+    width: 100%;
+  }
+
+  .eventOwner_container_heading h1 {
+    font-size: 2rem;
+  }
+
+  .eventOwner_container_title h2 {
+    font-size: 1.5rem;
+    line-height: 1.1;
+  }
+}

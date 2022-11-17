@@ -5,9 +5,11 @@ import Style from './Collection.module.css';
 import DaysComponent from './DaysComponents/DaysComponents';
 import images from '../../img';
 import {Button} from '../Button/Button';
+import {PopUp} from '../PopUp/PopUp';
 
 export const Collection = () => {
   const [popular, setPopular] = React.useState(true);
+  const [isOpenMenu, setOpenMenu] = React.useState<boolean>(false);
 
   const CardArray = [
     {
@@ -38,7 +40,7 @@ export const Collection = () => {
         <Button
           btnName="Create Ticket Type"
           handleClick={() => {
-            console.log('Hello');
+            setOpenMenu(true);
           }}
           classStyle={Style.btn_create_ticket_type}
         />
@@ -48,6 +50,27 @@ export const Collection = () => {
           {CardArray.map((el, i) => (
             <DaysComponent key={i + 1} />
           ))}
+        </div>
+      )}
+      {isOpenMenu && <p>Hello</p>}
+
+      {isOpenMenu && (
+        <div className={Style.modal}>
+          <div className={Style.modal_content}>
+            <div className={Style.modal_header}>
+              <div className={Style.modal_header_title}>Create Ticket Type</div>
+              <span
+                className={Style.modal_header_icon}
+                onClick={() => {
+                  setOpenMenu(false);
+                  // setAddress('');
+                }}
+              >
+                X
+              </span>
+            </div>
+            <PopUp />
+          </div>
         </div>
       )}
     </div>
