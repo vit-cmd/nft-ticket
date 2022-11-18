@@ -1,9 +1,9 @@
-import { Props } from 'next/script';
+import {Props} from 'next/script';
 import React from 'react';
 import EventSol from '../../@artifacts/contracts/Event.sol/Event.json';
-import { Event } from '../../@types/contracts/Event';
-import { connectContract } from './ConnectionContext';
-import { ethers } from 'ethers';
+import {Event} from '../../@types/contracts/Event';
+import {connectContract} from './ConnectionContext';
+import {ethers} from 'ethers';
 
 export interface IEventContext {
   approveOrDisableEventManager(
@@ -24,28 +24,19 @@ export interface IEventContext {
 
 const ADDRESS_EVENT_CONTRACT = process.env.NEXT_PUBLIC_EVENT_CONTRACT;
 
-export const EventContext = React.createContext<IEventContext>(
-  {} as IEventContext
-);
+export const EventContext = React.createContext<IEventContext>({} as IEventContext);
 
-export const EventProvider: React.FC<Props> = ({ children }) => {
+export const EventProvider: React.FC<Props> = ({children}) => {
   // Aprrove Event Manager Func
   const approveOrDisableEventManager = async (
     _provider: ethers.providers.Web3Provider,
     _address: string,
     _status: boolean
   ): Promise<void> => {
-    const contract = connectContract(
-      ADDRESS_EVENT_CONTRACT!,
-      EventSol.abi,
-      _provider.getSigner()
-    ) as Event;
+    const contract = connectContract(ADDRESS_EVENT_CONTRACT!, EventSol.abi, _provider.getSigner()) as Event;
 
     try {
-      const transaction = await contract!.approveOrDisableEventManager(
-        _address,
-        _status
-      );
+      const transaction = await contract!.approveOrDisableEventManager(_address, _status);
       await transaction.wait();
       const actionName = _status === true ? 'Approve' : 'Disable';
       alert(`${actionName} successfully`);
@@ -67,21 +58,10 @@ export const EventProvider: React.FC<Props> = ({ children }) => {
     endDay: number
   ): Promise<void> => {
     const signer = provider.getSigner();
-    const contract = connectContract(
-      ADDRESS_EVENT_CONTRACT!,
-      EventSol.abi,
-      signer
-    ) as Event;
+    const contract = connectContract(ADDRESS_EVENT_CONTRACT!, EventSol.abi, signer) as Event;
 
     try {
-      const transaction = await contract.createEvent(
-        eventName,
-        location,
-        description,
-        hashImage,
-        startDay,
-        endDay
-      );
+      const transaction = await contract.createEvent(eventName, location, description, hashImage, startDay, endDay);
       await transaction.wait();
       alert('Create event successfully');
     } catch (error) {
@@ -89,9 +69,7 @@ export const EventProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const value: IEventContext = { approveOrDisableEventManager, createEvent };
+  const value: IEventContext = {approveOrDisableEventManager, createEvent};
 
-  return (
-    <EventContext.Provider value={value}>{children}</EventContext.Provider>
-  );
+  return <EventContext.Provider value={value}>{children}</EventContext.Provider>;
 };

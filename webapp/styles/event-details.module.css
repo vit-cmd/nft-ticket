@@ -1,0 +1,54 @@
+.container_image_event {
+  height: 0px;
+  padding-bottom: 25%;
+  position: relative;
+  background-color: rgba(229, 232, 235, 0.314);
+}
+
+.container_image_event img {
+  color: transparent;
+  position: absolute;
+  inset: 0px;
+  box-sizing: border-box;
+  padding: 0px;
+  border: none;
+  margin: auto;
+  display: block;
+  width: 0px;
+  height: 0px;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.event_details_box {
+  width: 80%;
+  margin: 0 auto;
+  border-bottom: 2px solid;
+  padding-bottom: 2rem;
+}
+
+.event_details_box h1 {
+  font-size: 3.5rem;
+}
+
+.info_event {
+  margin-block: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+}
+
+.event_details_headher {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event_details_group_btn {
+  display: flex;
+  gap: 2rem;
+}
