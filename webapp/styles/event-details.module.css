@@ -26,6 +26,8 @@
 .event_details_box {
   width: 80%;
   margin: 0 auto;
+  border-bottom: 2px solid;
+  padding-bottom: 2rem;
 }
 
 .event_details_box h1 {
@@ -37,4 +39,16 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
+}
+
+.event_details_headher {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event_details_group_btn {
+  display: flex;
+  gap: 2rem;
 }

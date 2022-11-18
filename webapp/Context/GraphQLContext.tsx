@@ -1,11 +1,12 @@
 import React from 'react';
 import {gql, ApolloClient, InMemoryCache} from '@apollo/client';
-import {IEvent} from '../constants/interfaces';
+import {IEvent, ITicketType} from '../constants/interfaces';
 import {now} from 'moment';
 
 interface IGraphQLContext {
-  getEvent(id: number): Promise<IEvent>;
+  getEventWithTicketType(id: number): Promise<IEvent>;
   getEvents(): Promise<IEvent[]>;
+  getTicketTypes(): Promise<ITicketType[]>;
 }
 
 // Create TicketNFTContext
@@ -20,9 +21,7 @@ export const GraphQLProvider = (props: {children: any}) => {
   const getEvents = async (): Promise<IEvent[]> => {
     const query = gql`
       query {
-        events(orderBy: endDay, orderDirection: asc, where: {endDay_gt: "${Math.floor(
-          now() / 1000
-        )}"}) {
+        events(orderBy: endDay, orderDirection: asc, where: {endDay_gt: "${Math.floor(now() / 1000)}"}) {
           description
           endDay
           eventManager
@@ -39,7 +38,7 @@ export const GraphQLProvider = (props: {children: any}) => {
     return events;
   };
 
-  const getEvent = async (id: number): Promise<IEvent> => {
+  const getEventWithTicketType = async (id: number): Promise<IEvent> => {
     const query = gql`
       query {
         event(id: ${id}) {
@@ -51,6 +50,16 @@ export const GraphQLProvider = (props: {children: any}) => {
           location
           startDay
           name
+          ticketTypes {
+            eventID
+            hashImage
+            name
+            priceFactor
+            maxTicketCount
+            currentMintTickets
+            description
+            id
+          }
         }
       }
     `;
@@ -59,8 +68,26 @@ export const GraphQLProvider = (props: {children: any}) => {
     return event;
   };
 
+  async function getTicketTypes(): Promise<ITicketType[]> {
+    const query = gql`
+      query {
+        ticketTypes {
+          eventID
+          hashImage
+          id
+          maxTicketCount
+          name
+          priceFactor
+        }
+      }
+    `;
+    const data = await client.query({query});
+    const {ticketTypes} = data.data;
+    return ticketTypes as ITicketType[];
+  }
+
   // ---- Value object context
-  const value: IGraphQLContext = {getEvent, getEvents};
+  const value: IGraphQLContext = {getEventWithTicketType, getEvents, getTicketTypes};
 
   return <GraphQLContext.Provider value={value}>{props.children}</GraphQLContext.Provider>;
 };

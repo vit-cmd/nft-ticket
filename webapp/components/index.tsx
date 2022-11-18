@@ -13,3 +13,4 @@ export {CreateEvent} from './CreateNFT/CreateNFT';
 export {BigNFTSilder} from './BigNFTSilder/BigNFTSilder';
 export {LoadingSpinner} from './LoadingSpinner/LoadingSpinner';
 export {Collection} from './Collection/Collection';
+export {Slider} from './Slider/Slider';
