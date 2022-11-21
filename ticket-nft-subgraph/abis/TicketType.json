@@ -58,7 +58,7 @@
       {
         "indexed": false,
         "internalType": "uint64",
-        "name": "priceFactor",
+        "name": "price",
         "type": "uint64"
       }
     ],
@@ -94,7 +94,7 @@
       },
       {
         "internalType": "uint64",
-        "name": "priceFactor_",
+        "name": "price_",
         "type": "uint64"
       }
     ],
@@ -131,7 +131,7 @@
       },
       {
         "internalType": "uint64",
-        "name": "priceFactor",
+        "name": "price",
         "type": "uint64"
       }
     ],
@@ -204,7 +204,7 @@
       },
       {
         "internalType": "uint64",
-        "name": "priceFactor",
+        "name": "price",
         "type": "uint64"
       },
       {

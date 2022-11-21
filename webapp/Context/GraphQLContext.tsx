@@ -1,12 +1,17 @@
 import React from 'react';
-import {gql, ApolloClient, InMemoryCache} from '@apollo/client';
-import {IEvent, ITicketType} from '../constants/interfaces';
-import {now} from 'moment';
+import { gql, ApolloClient, InMemoryCache } from '@apollo/client';
+import {
+  IEvent,
+  ITicketType,
+  ITicketWithRelation,
+} from '../constants/interfaces';
+import { now } from 'moment';
 
-interface IGraphQLContext {
-  getEventWithTicketType(id: number): Promise<IEvent>;
+export interface IGraphQLContext {
   getEvents(): Promise<IEvent[]>;
+  getEventWithTicketType(id: number): Promise<IEvent>;
   getTicketTypes(): Promise<ITicketType[]>;
+  getTicketDetails(ticketID: string): Promise<ITicketWithRelation>;
 }
 
 // Create TicketNFTContext
@@ -14,14 +19,17 @@ export const GraphQLContext = React.createContext({} as IGraphQLContext);
 
 const client = new ApolloClient({
   uri: process.env.NEXT_PUBLIC_SUBGRAPH_API_URL,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
-
-export const GraphQLProvider = (props: {children: any}) => {
+export const GraphQLProvider = (props: { children: any }) => {
   const getEvents = async (): Promise<IEvent[]> => {
+    console.log('Now: ', now());
+
     const query = gql`
       query {
-        events(orderBy: endDay, orderDirection: asc, where: {endDay_gt: "${Math.floor(now() / 1000)}"}) {
+        events(orderBy: endDay, orderDirection: asc, where: {endDay_gt: "${Math.floor(
+          now() / 1000
+        )}"}) {
           description
           endDay
           eventManager
@@ -33,7 +41,7 @@ export const GraphQLProvider = (props: {children: any}) => {
         }
       }
     `;
-    const data = await client.query({query});
+    const data = await client.query({ query: query });
     const events: IEvent[] = data.data.events;
     return events;
   };
@@ -63,7 +71,7 @@ export const GraphQLProvider = (props: {children: any}) => {
         }
       }
     `;
-    const data = await client.query({query});
+    const data = await client.query({ query });
     const event: IEvent = data.data.event;
     return event;
   };
@@ -81,13 +89,62 @@ export const GraphQLProvider = (props: {children: any}) => {
         }
       }
     `;
-    const data = await client.query({query});
-    const {ticketTypes} = data.data;
+    const data = await client.query({ query });
+    const { ticketTypes } = data.data;
     return ticketTypes as ITicketType[];
   }
 
-  // ---- Value object context
-  const value: IGraphQLContext = {getEventWithTicketType, getEvents, getTicketTypes};
+  const getTicketDetails = async (
+    ticketID: string
+  ): Promise<ITicketWithRelation> => {
+    console.log('t', ticketID);
 
-  return <GraphQLContext.Provider value={value}>{props.children}</GraphQLContext.Provider>;
+    const query = gql`
+      query {
+        ticket(id: ${ticketID}) {
+          id
+          ticketTypeID
+          eventID
+          ticketType {
+            id
+            name
+            eventID
+            description
+            hashImage
+            currentMintTickets
+            maxTicketCount
+            priceFactor
+            event {
+              id
+              name
+              location
+              hashImage
+              description
+              eventManager
+              startDay
+              endDay
+            }
+          }
+        }
+      }
+    `;
+
+    const data = await client.query({ query: query });
+    const ticket: ITicketWithRelation = data.data.ticket;
+    return ticket;
+  };
+
+  // ---- Value object context
+  const value: IGraphQLContext = {
+    getEventWithTicketType,
+    getEvents,
+    getTicketTypes,
+    getTicketDetails,
+  };
+
+  return (
+    <GraphQLContext.Provider value={value}>
+      {props.children}
+    </GraphQLContext.Provider>
+  );
 };

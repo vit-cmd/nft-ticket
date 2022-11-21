@@ -1,7 +1,9 @@
+import { log } from '@graphprotocol/graph-ts';
 import { NewEvent, UpdateAprroveEventManager } from '../generated/Event/Event';
 import { Event, EventManager } from '../generated/schema';
 
 export function handleNewEvent(event: NewEvent): void {
+  log.info('handleNewEvent {}', [event.params.eventID.toString()]);
   let entity = new Event(event.params.eventID.toString());
 
   // Entity fields can be set based on event parameters
@@ -12,6 +14,7 @@ export function handleNewEvent(event: NewEvent): void {
   entity.hashImage = event.params.hashImage;
   entity.startDay = event.params.startDay;
   entity.endDay = event.params.endDay;
+  entity.exist = true;
 
   // Entities can be written to the store with `.save()`
   entity.save();
@@ -40,6 +43,9 @@ export function handleNewEvent(event: NewEvent): void {
 export function handlerUpdateAprroveEventManager(
   event: UpdateAprroveEventManager
 ): void {
+  log.info('handlerUpdateAprroveEventManager {}', [
+    event.params.eventManager.toHex(),
+  ]);
   let entity = EventManager.load(event.params.eventManager.toHex());
   if (!entity) {
     entity = new EventManager(event.params.eventManager.toHex());

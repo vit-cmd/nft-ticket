@@ -24,15 +24,34 @@ contract Ticket is ERC721 {
     struct TicketData {
         uint256 eventID;
         uint256 ticketTypeID;
+        bool forSale;
+        uint64 price;
     }
 
     mapping(uint256 => TicketData) public tickets;
 
-    event NewTicket(uint256 eventID, uint256 ticketTypeID, uint256 ticketID);
+    event NewTicket(
+        uint256 eventID,
+        uint256 ticketTypeID,
+        uint256 ticketID,
+        address owner
+    );
+    event TicketForSale(address by, uint256 ticketID, uint64 price);
+    event TicketSaleCancelled(address by, uint256 ticketID);
+    event TicketSold(address by, address to, uint256 ticketID, uint64 price);
+    event TicketPriceChanged(address by, uint256 ticketID, uint64 price);
     event UpdateCurrentMintedTicketInTicketType(
         uint256 ticketTypeID,
         uint64 currentMintTickets
     );
+
+    /**
+     * @dev check if the function caller is the ticket owner
+     */
+    modifier isTicketOwner(uint256 ticketID_) {
+        require((ownerOf(ticketID_) == msg.sender), "You're not owner");
+        _;
+    }
 
     /**
      * @dev Function to buy ticket to specific event in primary market.
@@ -53,7 +72,7 @@ contract Ticket is ERC721 {
         (
             uint64 currentMintTickets,
             uint64 maxTicketCount,
-            uint64 priceFactor
+            uint64 price
         ) = tktType.getTicketTypeData(ticketTypeID_);
 
         uint256 currentTicketID = ticketIDs.current();
@@ -62,8 +81,10 @@ contract Ticket is ERC721 {
             currentMintTickets < maxTicketCount,
             "All tickets have been minted"
         );
+        console.log(msg.value);
+        console.log(price * 1e15);
         require(
-            msg.sender.balance >= priceFactor * 1e18,
+            msg.value >= price * 1e15,
             "Please transfer some ETH to your wallet first"
         );
 
@@ -81,10 +102,58 @@ contract Ticket is ERC721 {
 
         console.log("Minted ticket with id: ", currentTicketID);
 
-        emit NewTicket(eventID_, ticketTypeID_, currentTicketID);
+        emit NewTicket(eventID_, ticketTypeID_, currentTicketID, msg.sender);
         emit UpdateCurrentMintedTicketInTicketType(
             ticketTypeID_,
             currentMintedTicket
         );
+    }
+
+    /**
+     * @dev buy request for a ticket available on secondary market (callable from any approved account/contract)
+     */
+    function buyTicketFromAttendee(uint256 ticketID_) external payable {
+        require(tickets[ticketID_].forSale == true, "Ticket not for sale");
+        uint64 _priceToPay = tickets[ticketID_].price;
+        address payable _seller = payable(ownerOf(ticketID_));
+        require((msg.value >= _priceToPay * 1e18), "Not enough money");
+
+        // pay the seller (price - fee)
+        _seller.transfer(_priceToPay);
+
+        emit TicketSold(_seller, msg.sender, ticketID_, _priceToPay);
+        safeTransferFrom(_seller, msg.sender, ticketID_);
+        tickets[ticketID_].forSale = false;
+    }
+
+    /**
+     * @dev Set ticket for sale and set price
+     */
+    function setTicketForSale(uint256 ticketID_, uint64 price_)
+        external
+        isTicketOwner(ticketID_)
+    {
+        tickets[ticketID_].forSale = true;
+        tickets[ticketID_].price = price_;
+        emit TicketForSale(msg.sender, ticketID_, price_);
+    }
+
+    /**
+     * @dev set individual ticket price
+     */
+    function setTicketPrice(uint256 ticketID_, uint64 price_)
+        public
+        isTicketOwner(ticketID_)
+    {
+        tickets[ticketID_].price = price_;
+        emit TicketPriceChanged(msg.sender, ticketID_, price_);
+    }
+
+    function cancelTicketSale(uint256 ticketID_)
+        external
+        isTicketOwner(ticketID_)
+    {
+        tickets[ticketID_].forSale = false;
+        emit TicketSaleCancelled(msg.sender, ticketID_);
     }
 }

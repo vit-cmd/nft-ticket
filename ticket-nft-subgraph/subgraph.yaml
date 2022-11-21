@@ -7,7 +7,7 @@ dataSources:
     network: localhost
     source:
       abi: Event
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      address: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -29,7 +29,7 @@ dataSources:
     network: localhost
     source:
       abi: TicketType
-      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+      address: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -48,7 +48,7 @@ dataSources:
     network: localhost
     source:
       abi: Ticket
-      address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+      address: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -59,8 +59,18 @@ dataSources:
         - name: Ticket
           file: ./abis/Ticket.json
       eventHandlers:
-        - event: NewTicket(uint256,uint256,uint256)
+        - event: NewTicket(uint256,uint256,uint256,address)
           handler: handleNewTicket
         - event: UpdateCurrentMintedTicketInTicketType(uint256,uint64)
           handler: handleUpdateCurrentMintedTicketInTicketType
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransferTicket
+        - event: TicketForSale(address,uint256,uint64)
+          handler: handleTicketForSale
+        - event: TicketSaleCancelled(address,uint256)
+          handler: handleTicketSaleCancelled
+        - event: TicketPriceChanged(address,uint256,uint64)
+          handler: hanldeTicketPriceChanged
+        - event: TicketSold(address,address,uint256,uint64)
+          handler: hanldeTicketSold
       file: ./src/ticket.ts
