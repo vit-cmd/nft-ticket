@@ -6,7 +6,7 @@ import {TiArrowLeftThick, TiArrowRightThick} from 'react-icons/ti';
 import Style from './Slider.module.css';
 import SliderCard from './SliderCard/SliderCard';
 
-export const Slider = (props: {id: number; cards: any[]; owner: string}) => {
+export const Slider = (props: {id: number; cards: any[]; owner: string; widthScroll: number}) => {
   const [width, setWidth] = useState(0);
   const dragSlider = useRef<HTMLDivElement>(null);
 
@@ -17,7 +17,7 @@ export const Slider = (props: {id: number; cards: any[]; owner: string}) => {
   
   const handleScroll = (direction: string) => {
     const {current} = dragSlider;
-    const scrollAmount = window.innerWidth > 10000 ? 300 : 250;
+    const scrollAmount = window.innerWidth > props.widthScroll ? 300 : 250;
 
     if (direction == 'left') {
       current!.scrollLeft -= scrollAmount;

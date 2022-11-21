@@ -13,7 +13,7 @@ interface ITicketTypeContext {
     hashImage: string,
     price: number,
     amount: number
-  ): Promise<void>;
+  ): Promise<boolean>;
 }
 
 // Create TicketTypeContext
@@ -31,7 +31,7 @@ export const TicketTypeProvider = (props: { children: any }) => {
     hashImage: string,
     price: number,
     amount: number
-  ): Promise<void> => {
+  ): Promise<boolean> => {
     const signer = provider.getSigner();
     const contract = connectContract(
       ADDRESS_TICKET_TYPE_CONTRACT!,
@@ -51,9 +51,10 @@ export const TicketTypeProvider = (props: { children: any }) => {
         price
       );
       await transaction.wait();
-      alert('Create ticket type successfully');
+      return true;
     } catch (error) {
       console.error('Error: ', error);
+      return false;
     }
   };
 

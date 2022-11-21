@@ -49,7 +49,7 @@ export const CreateEvent = () => {
     }
 
     const hash = await uploadImage(file!);
-    await createEvent(
+    const result = await createEvent(
       provider,
       eventName,
       location,
@@ -58,6 +58,11 @@ export const CreateEvent = () => {
       startDay,
       endDay
     );
+    if (result) {
+      alert('Create event successfully.');
+    } else {
+      alert('Create event error.')
+    }
   };
 
   return (
