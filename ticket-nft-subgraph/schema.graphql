@@ -7,6 +7,7 @@ type Event @entity {
   eventManager: Bytes! # address
   startDay: BigInt!
   endDay: BigInt!
+  exist: Boolean!
   ticketTypes: [TicketType!]! @derivedFrom(field: "event")
 }
 
@@ -18,7 +19,8 @@ type TicketType @entity {
   hashImage: String! # string
   currentMintTickets: BigInt! # uint64
   maxTicketCount: BigInt! # uint64
-  priceFactor: BigInt! # uint64
+  priceFactor: BigDecimal!
+  exist: Boolean!
   event: Event!
   tickets: [Ticket!]! @derivedFrom(field: "ticketType")
 }
@@ -28,9 +30,53 @@ type Ticket @entity {
   eventID: BigInt! # uint256
   ticketTypeID: BigInt! # uint256
   ticketType: TicketType!
+  owner: Bytes!
+  forSale: Boolean!
+  price: BigDecimal
+  listings: [Listing!]! @derivedFrom(field: "ticket")
+  sales: [Sale!]! @derivedFrom(field: "ticket")
+  transfers: [Transfer!]! @derivedFrom(field: "ticket")
+  cancels: [Cancel!]! @derivedFrom(field: "ticket")
 }
 
 type EventManager @entity {
   id: ID!
   approve: Boolean!
+}
+
+type Transfer @entity {
+  id: ID!
+  from: Bytes!
+  to: Bytes!
+  ticketID: BigInt!
+  date: BigInt!
+  ticket: Ticket!
+}
+
+type Sale @entity {
+  id: ID!
+  from: Bytes!
+  to: Bytes!
+  ticketID: BigInt!
+  price: BigDecimal!
+  date: BigInt!
+  ticket: Ticket!
+}
+
+type Listing @entity {
+  id: ID!
+  price: BigDecimal!
+  from: Bytes!
+  ticketID: BigInt!
+  date: BigInt!
+  ticket: Ticket!
+}
+
+type Cancel @entity {
+  id: ID!
+  price: BigDecimal!
+  from: Bytes!
+  ticketID: BigInt!
+  date: BigInt!
+  ticket: Ticket!
 }

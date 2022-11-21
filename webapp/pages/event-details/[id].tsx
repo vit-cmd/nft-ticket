@@ -1,23 +1,30 @@
 import React from 'react';
 import Image from 'next/image';
-import {MdVerified} from 'react-icons/md';
-import {BiDetail} from 'react-icons/bi';
-import {useRouter} from 'next/router';
+import { MdVerified } from 'react-icons/md';
+import { BiDetail } from 'react-icons/bi';
+import { useRouter } from 'next/router';
 import Style from '../../styles/event-details.module.css';
-import {ConnectionContext, GraphQLContext, IPFSContext, TicketTypeContext} from '../../Context';
-import {isArray} from '@apollo/client/cache/inmemory/helpers';
-import {IEvent, ITicketType} from '../../constants/interfaces';
-import {Button, Error, Slider} from '../../components';
-import {UploadImage} from '../../components/CreateNFT/UploadImage/UploadImage';
-import {RiText} from 'react-icons/ri';
-import {FaSortAmountUpAlt} from 'react-icons/fa';
-import {ImPriceTags} from 'react-icons/im';
+import {
+  ConnectionContext,
+  GraphQLContext,
+  IPFSContext,
+  TicketTypeContext,
+} from '../../Context';
+import { isArray } from '@apollo/client/cache/inmemory/helpers';
+import { IEvent, ITicketType } from '../../constants/interfaces';
+import { Button, Error, Slider } from '../../components';
+import { UploadImage } from '../../components/CreateNFT/UploadImage/UploadImage';
+import { RiText } from 'react-icons/ri';
+import { FaSortAmountUpAlt } from 'react-icons/fa';
+import { ImPriceTags } from 'react-icons/im';
 
 const EventDetailsWithId = () => {
   const [event, setEvent] = React.useState<IEvent>();
   const [startDay, setStartDay] = React.useState<Date>();
   const [endDay, setEndDay] = React.useState<Date>();
-  const [ticketTypes, setTicketTypes] = React.useState<ITicketType[]>(event?.ticketTypes!);
+  const [ticketTypes, setTicketTypes] = React.useState<ITicketType[]>(
+    event?.ticketTypes!
+  );
   const [isOpenMenu, setOpenMenu] = React.useState<boolean>(false);
   const [name, setName] = React.useState<string>();
   const [description, setDescription] = React.useState<string>();
@@ -26,14 +33,15 @@ const EventDetailsWithId = () => {
   const [file, setFile] = React.useState<File>();
 
   // use context
-  const {getEventWithTicketType} = React.useContext(GraphQLContext);
-  const {uploadImage} = React.useContext(IPFSContext);
-  const {setOpenError, setError, provider, currentAccount} = React.useContext(ConnectionContext);
-  const {createTicketType} = React.useContext(TicketTypeContext);
-  const {getTicketTypes} = React.useContext(GraphQLContext);
+  const { getEventWithTicketType } = React.useContext(GraphQLContext);
+  const { uploadImage } = React.useContext(IPFSContext);
+  const { setOpenError, setError, provider, currentAccount } =
+    React.useContext(ConnectionContext);
+  const { createTicketType } = React.useContext(TicketTypeContext);
+  const { getTicketTypes } = React.useContext(GraphQLContext);
 
   const router = useRouter();
-  const {id} = router.query;
+  const { id } = router.query;
 
   // Handle
   const handleCreateTicketType = async () => {
@@ -50,8 +58,18 @@ const EventDetailsWithId = () => {
       return;
     }
 
+    console.log('price in page', price);
+
     const hash = await uploadImage(file!);
-    await createTicketType(provider, event?.id!, name, description, hash, price, amount);
+    await createTicketType(
+      provider,
+      event?.id!,
+      name,
+      description,
+      hash,
+      price * 1000,
+      amount
+    );
 
     const tempore = await getTicketTypes();
     setTicketTypes(tempore);
@@ -98,16 +116,20 @@ const EventDetailsWithId = () => {
             </h1>
             <div className={Style.event_details_group_btn}>
               {currentAccount.toLowerCase() === event.eventManager && (
-                <><Button
-                  btnName="Create Ticket Type"
-                  handleClick={() => {
-                    setOpenMenu(true);
-                  } }
-                  classStyle={Style.btn_create_ticket_type} /><Button
+                <>
+                  <Button
+                    btnName="Create Ticket Type"
+                    handleClick={() => {
+                      setOpenMenu(true);
+                    }}
+                    classStyle={Style.btn_create_ticket_type}
+                  />
+                  <Button
                     btnName="Update event"
-                    handleClick={() => { } }
-                    classStyle={Style.btn_create_ticket_type} /></>
-
+                    handleClick={() => {}}
+                    classStyle={Style.btn_create_ticket_type}
+                  />
+                </>
               )}
             </div>
           </div>
@@ -116,10 +138,12 @@ const EventDetailsWithId = () => {
           </span>
           <div className={Style.info_event}>
             <span>
-              Start day: <b>{`${startDay!.getMonth()}/${startDay!.getDate()}/${startDay!.getFullYear()}`}</b>
+              Start day:{' '}
+              <b>{`${startDay!.getMonth()}/${startDay!.getDate()}/${startDay!.getFullYear()}`}</b>
             </span>
             <span>
-              End day: <b>{`${endDay!.getMonth()}/${endDay!.getDate()}/${endDay!.getFullYear()}`}</b>
+              End day:{' '}
+              <b>{`${endDay!.getMonth()}/${endDay!.getDate()}/${endDay!.getFullYear()}`}</b>
             </span>
             <span>
               Chain: <b>Ethereum</b>
@@ -130,13 +154,19 @@ const EventDetailsWithId = () => {
           </h2>
           <p>{event.description}</p>
         </div>
-        <Slider id={parseInt(id)} cards={event.ticketTypes!} owner={event.eventManager} />
+        <Slider
+          id={parseInt(id)}
+          cards={event.ticketTypes!}
+          owner={event.eventManager}
+        />
 
         {isOpenMenu && (
           <div className={Style.modal}>
             <div className={Style.modal_content}>
               <div className={Style.modal_header}>
-                <div className={Style.modal_header_title}>Create Ticket Type</div>
+                <div className={Style.modal_header_title}>
+                  Create Ticket Type
+                </div>
               </div>
               <div className={Style.upload}>
                 {/* Image  */}
@@ -149,7 +179,11 @@ const EventDetailsWithId = () => {
                       <div className={Style.Form_box_input_box_icon}>
                         <RiText />
                       </div>
-                      <input type="text" placeholder="Ticket type" onChange={(e) => setName(e.target.value)} />
+                      <input
+                        type="text"
+                        placeholder="Ticket type"
+                        onChange={(e) => setName(e.target.value)}
+                      />
                     </div>
                   </div>
 
@@ -190,7 +224,9 @@ const EventDetailsWithId = () => {
                           type="number"
                           required
                           onChange={(e) => {
-                            setPrice(parseInt(e.target.value));
+                            setPrice(
+                              parseFloat(Number(e.target.value).toFixed(3))
+                            );
                           }}
                         />
                       </div>

@@ -59,3 +59,5 @@ ticket-nft-subgraph/generated
 ticket-nft-subgraph/build
 # Docker
 data
+# Matchstick
+ticket-nft-subgraph/tests/.*

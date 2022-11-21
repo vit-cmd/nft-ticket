@@ -21,7 +21,7 @@ contract TicketType {
         string hashImage;
         uint64 currentMintTickets; // current ticket minted in this ticket class
         uint64 maxTicketCount; // maximum number of tickets in ticket class
-        uint64 priceFactor; // multiply by priceUnit for real price
+        uint64 price;
         bool exist;
     }
 
@@ -35,7 +35,7 @@ contract TicketType {
         string hashImage,
         uint64 currentMintTickets,
         uint64 maxTicketCount,
-        uint64 priceFactor
+        uint64 price
     );
 
     // Function
@@ -52,7 +52,7 @@ contract TicketType {
         string memory description_,
         string memory hashImage_,
         uint64 maxTicketCount_,
-        uint64 priceFactor_
+        uint64 price_
     ) external returns (uint256) {
         require(evt.isEventExist(eventID_) == true, "Event does not exist");
         require(
@@ -72,7 +72,7 @@ contract TicketType {
             hashImage_,
             0,
             maxTicketCount_,
-            priceFactor_,
+            price_,
             true
         );
 
@@ -86,7 +86,7 @@ contract TicketType {
             hashImage_,
             ticketTypes[currentTicketTypeID].currentMintTickets,
             maxTicketCount_,
-            priceFactor_
+            price_
         );
 
         console.log("Create ticket type with id: ", currentTicketTypeID);
@@ -121,13 +121,13 @@ contract TicketType {
         returns (
             uint64 currentMintTickets,
             uint64 maxTicketCount,
-            uint64 priceFactor
+            uint64 price
         )
     {
         return (
             ticketTypes[ticketTypeID_].currentMintTickets,
             ticketTypes[ticketTypeID_].maxTicketCount,
-            ticketTypes[ticketTypeID_].priceFactor
+            ticketTypes[ticketTypeID_].price
         );
     }
 }

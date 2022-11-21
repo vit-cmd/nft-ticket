@@ -11,7 +11,8 @@
     "graph-local-clean": "docker-compose down -v && docker-compose rm -v && sudo rm -rf data/ipfs data/postgres",
     "create-local": "graph create --node http://127.0.0.1:8020 ticket-nft",
     "deploy-local": "cd ticket-nft-subgraph && graph deploy --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020 ticket-nft --network localhost",
-    "hardhat-local": "hardhat node --hostname 0.0.0.0"
+    "hardhat-local": "hardhat node --hostname 0.0.0.0",
+    "hardhat-deploy": "npx hardhat deploy"
   },
   "repository": {
     "type": "git",
