@@ -10,7 +10,7 @@ import { now } from 'moment';
 export interface IGraphQLContext {
   getEvents(): Promise<IEvent[]>;
   getEventWithTicketType(id: number): Promise<IEvent>;
-  getTicketTypes(): Promise<ITicketType[]>;
+  getTicketTypes(id: number): Promise<ITicketType[]>;
   getTicketDetails(ticketID: string): Promise<ITicketWithRelation>;
 }
 
@@ -23,7 +23,6 @@ const client = new ApolloClient({
 });
 export const GraphQLProvider = (props: { children: any }) => {
   const getEvents = async (): Promise<IEvent[]> => {
-    console.log('Now: ', now());
 
     const query = gql`
       query {
@@ -49,7 +48,7 @@ export const GraphQLProvider = (props: { children: any }) => {
   const getEventWithTicketType = async (id: number): Promise<IEvent> => {
     const query = gql`
       query {
-        event(id: ${id}) {
+        event(id: "${id}") {
           description
           endDay
           eventManager
@@ -58,7 +57,7 @@ export const GraphQLProvider = (props: { children: any }) => {
           location
           startDay
           name
-          ticketTypes {
+          ticketTypes(where: {eventID: "${id}"}) {
             eventID
             hashImage
             name
@@ -76,10 +75,10 @@ export const GraphQLProvider = (props: { children: any }) => {
     return event;
   };
 
-  async function getTicketTypes(): Promise<ITicketType[]> {
+  async function getTicketTypes(id: number): Promise<ITicketType[]> {
     const query = gql`
       query {
-        ticketTypes {
+        ticketTypes(where: {eventID: "${id}"}) {
           eventID
           hashImage
           id
@@ -97,7 +96,6 @@ export const GraphQLProvider = (props: { children: any }) => {
   const getTicketDetails = async (
     ticketID: string
   ): Promise<ITicketWithRelation> => {
-    console.log('t', ticketID);
 
     const query = gql`
       query {

@@ -1,30 +1,28 @@
-import React from 'react';
-import Image from 'next/image';
-import { MdVerified } from 'react-icons/md';
-import { BiDetail } from 'react-icons/bi';
-import { useRouter } from 'next/router';
-import Style from '../../styles/event-details.module.css';
+import React from "react";
+import Image from "next/image";
+import { MdVerified } from "react-icons/md";
+import { BiDetail } from "react-icons/bi";
+import { useRouter } from "next/router";
+import Style from "../../styles/event-details.module.css";
 import {
   ConnectionContext,
   GraphQLContext,
   IPFSContext,
   TicketTypeContext,
-} from '../../Context';
-import { isArray } from '@apollo/client/cache/inmemory/helpers';
-import { IEvent, ITicketType } from '../../constants/interfaces';
-import { Button, Error, Slider } from '../../components';
-import { UploadImage } from '../../components/CreateNFT/UploadImage/UploadImage';
-import { RiText } from 'react-icons/ri';
-import { FaSortAmountUpAlt } from 'react-icons/fa';
-import { ImPriceTags } from 'react-icons/im';
+} from "../../Context";
+import { isArray } from "@apollo/client/cache/inmemory/helpers";
+import { IEvent, ITicketType } from "../../constants/interfaces";
+import { Button, Error, Slider } from "../../components";
+import { UploadImage } from "../../components/CreateNFT/UploadImage/UploadImage";
+import { RiText } from "react-icons/ri";
+import { FaSortAmountUpAlt } from "react-icons/fa";
+import { ImPriceTags } from "react-icons/im";
 
 const EventDetailsWithId = () => {
   const [event, setEvent] = React.useState<IEvent>();
   const [startDay, setStartDay] = React.useState<Date>();
   const [endDay, setEndDay] = React.useState<Date>();
-  const [ticketTypes, setTicketTypes] = React.useState<ITicketType[]>(
-    event?.ticketTypes!
-  );
+  const [ticketTypes, setTicketTypes] = React.useState<ITicketType[]>();
   const [isOpenMenu, setOpenMenu] = React.useState<boolean>(false);
   const [name, setName] = React.useState<string>();
   const [description, setDescription] = React.useState<string>();
@@ -33,35 +31,55 @@ const EventDetailsWithId = () => {
   const [file, setFile] = React.useState<File>();
 
   // use context
-  const { getEventWithTicketType } = React.useContext(GraphQLContext);
+  const { getEventWithTicketType, getTicketTypes } =
+    React.useContext(GraphQLContext);
   const { uploadImage } = React.useContext(IPFSContext);
   const { setOpenError, setError, provider, currentAccount } =
     React.useContext(ConnectionContext);
   const { createTicketType } = React.useContext(TicketTypeContext);
-  const { getTicketTypes } = React.useContext(GraphQLContext);
 
   const router = useRouter();
   const { id } = router.query;
+
+  if (isArray(id)) {
+    return;
+  }
+
+  React.useEffect(() => {
+    const getData = async () => {
+      const tempore = await getEventWithTicketType(parseInt(id!));
+
+      if (!tempore) {
+        return;
+      }
+      setStartDay(new Date(tempore.startDay * 1000));
+      setEndDay(new Date(tempore.endDay * 1000));
+      setEvent(tempore);
+      const types = await getTicketTypes(parseInt(id!));
+      setTicketTypes(types);
+    };
+    getData();
+  }, [getEventWithTicketType, id, ticketTypes]);
 
   // Handle
   const handleCreateTicketType = async () => {
     if (!provider) {
       setOpenError(true);
-      setError('Please connect wallet');
+      setError("Please connect wallet");
       return;
     }
-
     if (!file || !name || !description || !price || !amount) {
       setOpenError(true);
-      setError('Please enter all fields');
+      setError("Please enter all fields");
       <Error />;
       return;
     }
-
-    console.log('price in page', price);
-
+    if (price < 0 || amount < 0) {
+      alert("Number can not be negative.");
+      return;
+    }
     const hash = await uploadImage(file!);
-    await createTicketType(
+    const result = await createTicketType(
       provider,
       event?.id!,
       name,
@@ -71,29 +89,18 @@ const EventDetailsWithId = () => {
       amount
     );
 
-    const tempore = await getTicketTypes();
-    setTicketTypes(tempore);
+    if (result) {
+      // setTicketTypes(undefined);
+      alert("Create ticket type successfully.");
+    }
   };
 
-  React.useEffect(() => {
-    console.log('List ticket type: ', ticketTypes);
-  }, [ticketTypes]);
-
-  React.useEffect(() => {
-    const getData = async () => {
-      if (!id || isArray(id)) {
-        return;
-      }
-      const tempore = await getEventWithTicketType(parseInt(id));
-      setStartDay(new Date(tempore.startDay * 1000));
-      setEndDay(new Date(tempore.endDay * 1000));
-      setEvent(tempore);
-    };
-    getData();
-  }, [getEventWithTicketType, id]);
-
-  if (!event || isArray(id) || !id) {
-    return;
+  if (!event || isArray(id)) {
+    return (
+      <div className={Style.event_details_box}>
+        <h1>Not found event</h1>
+      </div>
+    );
   } else
     return (
       <div>
@@ -103,13 +110,13 @@ const EventDetailsWithId = () => {
             width={500}
             height={500}
             objectFit="cover"
-            alt={'Avatar'}
+            alt={"Avatar"}
           />
         </div>
         <div className={Style.event_details_box}>
           <div className={Style.event_details_headher}>
             <h1>
-              {event.name}.{' '}
+              {event.name}.{" "}
               <span>
                 <MdVerified />
               </span>
@@ -138,11 +145,11 @@ const EventDetailsWithId = () => {
           </span>
           <div className={Style.info_event}>
             <span>
-              Start day:{' '}
+              Start day:{" "}
               <b>{`${startDay!.getMonth()}/${startDay!.getDate()}/${startDay!.getFullYear()}`}</b>
             </span>
             <span>
-              End day:{' '}
+              End day:{" "}
               <b>{`${endDay!.getMonth()}/${endDay!.getDate()}/${endDay!.getFullYear()}`}</b>
             </span>
             <span>
@@ -154,11 +161,14 @@ const EventDetailsWithId = () => {
           </h2>
           <p>{event.description}</p>
         </div>
-        <Slider
-          id={parseInt(id)}
-          cards={event.ticketTypes!}
-          owner={event.eventManager}
-        />
+        {ticketTypes && (
+          <Slider
+            id={parseInt(id!)}
+            cards={ticketTypes}
+            widthScroll={ticketTypes.length * 400}
+            owner={event.eventManager}
+          />
+        )}
 
         {isOpenMenu && (
           <div className={Style.modal}>

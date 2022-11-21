@@ -19,7 +19,7 @@ export interface IEventContext {
     hashImage: string,
     startDay: number,
     endDay: number
-  ): Promise<void>;
+  ): Promise<boolean>;
 }
 
 const ADDRESS_EVENT_CONTRACT = process.env.NEXT_PUBLIC_EVENT_CONTRACT;
@@ -56,16 +56,17 @@ export const EventProvider: React.FC<Props> = ({children}) => {
     hashImage: string,
     startDay: number,
     endDay: number
-  ): Promise<void> => {
+  ): Promise<boolean> => {
     const signer = provider.getSigner();
     const contract = connectContract(ADDRESS_EVENT_CONTRACT!, EventSol.abi, signer) as Event;
 
     try {
       const transaction = await contract.createEvent(eventName, location, description, hashImage, startDay, endDay);
       await transaction.wait();
-      alert('Create event successfully');
+      return true;
     } catch (error) {
       console.error('Error: ', error);
+      return false;
     }
   };
 
