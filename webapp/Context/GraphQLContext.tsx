@@ -1,11 +1,11 @@
-import React from 'react';
-import { gql, ApolloClient, InMemoryCache } from '@apollo/client';
+import React from "react";
+import { gql, ApolloClient, InMemoryCache } from "@apollo/client";
 import {
   IEvent,
   ITicketType,
   ITicketWithRelation,
-} from '../constants/interfaces';
-import { now } from 'moment';
+} from "../constants/interfaces";
+import { now } from "moment";
 
 export interface IGraphQLContext {
   getEvents(): Promise<IEvent[]>;
@@ -17,13 +17,14 @@ export interface IGraphQLContext {
 // Create TicketNFTContext
 export const GraphQLContext = React.createContext({} as IGraphQLContext);
 
-const client = new ApolloClient({
+const initApollo = {
   uri: process.env.NEXT_PUBLIC_SUBGRAPH_API_URL,
   cache: new InMemoryCache(),
-});
+};
+
 export const GraphQLProvider = (props: { children: any }) => {
   const getEvents = async (): Promise<IEvent[]> => {
-
+    const client = new ApolloClient(initApollo);
     const query = gql`
       query {
         events(orderBy: endDay, orderDirection: asc, where: {endDay_gt: "${Math.floor(
@@ -46,6 +47,7 @@ export const GraphQLProvider = (props: { children: any }) => {
   };
 
   const getEventWithTicketType = async (id: number): Promise<IEvent> => {
+    const client = new ApolloClient(initApollo);
     const query = gql`
       query {
         event(id: "${id}") {
@@ -76,6 +78,7 @@ export const GraphQLProvider = (props: { children: any }) => {
   };
 
   async function getTicketTypes(id: number): Promise<ITicketType[]> {
+    const client = new ApolloClient(initApollo);
     const query = gql`
       query {
         ticketTypes(where: {eventID: "${id}"}) {
@@ -96,7 +99,7 @@ export const GraphQLProvider = (props: { children: any }) => {
   const getTicketDetails = async (
     ticketID: string
   ): Promise<ITicketWithRelation> => {
-
+    const client = new ApolloClient(initApollo);
     const query = gql`
       query {
         ticket(id: ${ticketID}) {

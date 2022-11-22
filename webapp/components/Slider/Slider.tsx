@@ -14,7 +14,6 @@ export const Slider = (props: {id: number; cards: any[]; owner: string; widthScr
     setWidth(dragSlider.current!.scrollWidth - dragSlider.current!.offsetWidth);
   }, []);
 
-  
   const handleScroll = (direction: string) => {
     const {current} = dragSlider;
     const scrollAmount = window.innerWidth > props.widthScroll ? 300 : 250;

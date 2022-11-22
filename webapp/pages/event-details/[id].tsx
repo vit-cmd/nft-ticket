@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { MdVerified } from "react-icons/md";
 import { BiDetail } from "react-icons/bi";
@@ -29,6 +29,7 @@ const EventDetailsWithId = () => {
   const [price, setPrice] = React.useState<number>();
   const [amount, setAmount] = React.useState<number>();
   const [file, setFile] = React.useState<File>();
+  const [isChange, setChange] = React.useState<boolean>(false);
 
   // use context
   const { getEventWithTicketType, getTicketTypes } =
@@ -40,26 +41,24 @@ const EventDetailsWithId = () => {
 
   const router = useRouter();
   const { id } = router.query;
-
   if (isArray(id)) {
     return;
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const getData = async () => {
       const tempore = await getEventWithTicketType(parseInt(id!));
-
       if (!tempore) {
         return;
       }
       setStartDay(new Date(tempore.startDay * 1000));
       setEndDay(new Date(tempore.endDay * 1000));
       setEvent(tempore);
-      const types = await getTicketTypes(parseInt(id!));
-      setTicketTypes(types);
+
+      setTicketTypes(tempore?.ticketTypes!);
     };
     getData();
-  }, [getEventWithTicketType, id, ticketTypes]);
+  }, [id]);
 
   // Handle
   const handleCreateTicketType = async () => {
@@ -88,11 +87,19 @@ const EventDetailsWithId = () => {
       price * 1000,
       amount
     );
-
-    if (result) {
-      // setTicketTypes(undefined);
-      alert("Create ticket type successfully.");
-    }
+    const newTicketType: ITicketType = {
+      currentMintTickets: 0,
+      description,
+      eventID: parseInt(id!),
+      exist: true,
+      hashImage: hash,
+      maxTicketCount: amount,
+      name,
+      priceFactor: price,
+      id: result,
+    };
+    setTicketTypes([...ticketTypes!, newTicketType]);
+    alert("Create ticket type successfully.");
   };
 
   if (!event || isArray(id)) {
@@ -164,8 +171,8 @@ const EventDetailsWithId = () => {
         {ticketTypes && (
           <Slider
             id={parseInt(id!)}
-            cards={ticketTypes}
-            widthScroll={ticketTypes.length * 400}
+            cards={ticketTypes!}
+            widthScroll={ticketTypes!.length * 400}
             owner={event.eventManager}
           />
         )}
