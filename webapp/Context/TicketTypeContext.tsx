@@ -1,8 +1,8 @@
-import React from 'react';
-import ethers from 'ethers';
-import { connectContract } from './ConnectionContext';
-import TicketTypeSol from '../../@artifacts/contracts/TicketType.sol/TicketType.json';
-import { TicketType } from '../../@types/contracts/TicketType';
+import React from "react";
+import ethers from "ethers";
+import { connectContract } from "./ConnectionContext";
+import TicketTypeSol from "../../@artifacts/contracts/TicketType.sol/TicketType.json";
+import { TicketType } from "../../@types/contracts/TicketType";
 
 interface ITicketTypeContext {
   createTicketType(
@@ -13,7 +13,7 @@ interface ITicketTypeContext {
     hashImage: string,
     price: number,
     amount: number
-  ): Promise<boolean>;
+  ): Promise<number>;
 }
 
 // Create TicketTypeContext
@@ -31,7 +31,7 @@ export const TicketTypeProvider = (props: { children: any }) => {
     hashImage: string,
     price: number,
     amount: number
-  ): Promise<boolean> => {
+  ): Promise<number> => {
     const signer = provider.getSigner();
     const contract = connectContract(
       ADDRESS_TICKET_TYPE_CONTRACT!,
@@ -39,7 +39,7 @@ export const TicketTypeProvider = (props: { children: any }) => {
       signer
     ) as TicketType;
 
-    console.log('price', price);
+    console.log("price", price);
 
     try {
       const transaction = await contract.createTicketType(
@@ -50,11 +50,14 @@ export const TicketTypeProvider = (props: { children: any }) => {
         amount,
         price
       );
-      await transaction.wait();
-      return true;
+      const rc = await transaction.wait();
+      const event = rc.events?.find((event) => event.event === "NewTicketType");
+      const [ticketTypeID] = event?.args!;
+
+      return ticketTypeID.toNumber();
     } catch (error) {
-      console.error('Error: ', error);
-      return false;
+      console.error("Error: ", error);
+      throw error;
     }
   };
 

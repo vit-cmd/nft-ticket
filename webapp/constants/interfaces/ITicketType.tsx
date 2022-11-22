@@ -1,6 +1,7 @@
 import { IEvent } from './IEvent';
 
 export interface ITicketType {
+  id?: number
   eventID: number;
   name: string;
   description: string;
@@ -12,7 +13,7 @@ export interface ITicketType {
 }
 
 export interface ITicketTypeWithRelation {
-  id: string;
+  id?: string;
   name: string;
   eventID: number;
   description: string;
