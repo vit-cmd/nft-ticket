@@ -33,7 +33,6 @@ contract TicketType {
         string name,
         string description,
         string hashImage,
-        uint64 currentMintTickets,
         uint64 maxTicketCount,
         uint64 price
     );
@@ -84,7 +83,6 @@ contract TicketType {
             name_,
             description_,
             hashImage_,
-            ticketTypes[currentTicketTypeID].currentMintTickets,
             maxTicketCount_,
             price_
         );

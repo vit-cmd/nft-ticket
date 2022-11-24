@@ -34,16 +34,13 @@ contract Ticket is ERC721 {
         uint256 eventID,
         uint256 ticketTypeID,
         uint256 ticketID,
-        address owner
+        address owner,
+        uint64 currentMintedTicket
     );
     event TicketForSale(address by, uint256 ticketID, uint64 price);
     event TicketSaleCancelled(address by, uint256 ticketID);
     event TicketSold(address by, address to, uint256 ticketID, uint64 price);
     event TicketPriceChanged(address by, uint256 ticketID, uint64 price);
-    event UpdateCurrentMintedTicketInTicketType(
-        uint256 ticketTypeID,
-        uint64 currentMintTickets
-    );
 
     /**
      * @dev check if the function caller is the ticket owner
@@ -81,8 +78,6 @@ contract Ticket is ERC721 {
             currentMintTickets < maxTicketCount,
             "All tickets have been minted"
         );
-        console.log(msg.value);
-        console.log(price * 1e15);
         require(
             msg.value >= price * 1e15,
             "Please transfer some ETH to your wallet first"
@@ -102,28 +97,31 @@ contract Ticket is ERC721 {
 
         console.log("Minted ticket with id: ", currentTicketID);
 
-        emit NewTicket(eventID_, ticketTypeID_, currentTicketID, msg.sender);
-        emit UpdateCurrentMintedTicketInTicketType(
+        emit NewTicket(
+            eventID_,
             ticketTypeID_,
+            currentTicketID,
+            msg.sender,
             currentMintedTicket
         );
     }
 
     /**
-     * @dev buy request for a ticket available on secondary market (callable from any approved account/contract)
+     * @dev buy ticket from secondary market
      */
     function buyTicketFromAttendee(uint256 ticketID_) external payable {
         require(tickets[ticketID_].forSale == true, "Ticket not for sale");
-        uint64 _priceToPay = tickets[ticketID_].price;
+        uint64 _priceToPay = tickets[ticketID_].price * 1e15;
         address payable _seller = payable(ownerOf(ticketID_));
-        require((msg.value >= _priceToPay * 1e18), "Not enough money");
+        require((msg.value >= _priceToPay), "Not enough money");
 
-        // pay the seller (price - fee)
+        // send eth to the seller (_priceToPay)
         _seller.transfer(_priceToPay);
 
-        emit TicketSold(_seller, msg.sender, ticketID_, _priceToPay);
-        safeTransferFrom(_seller, msg.sender, ticketID_);
+        // transfer nft to buyer
+        _transfer(_seller, msg.sender, ticketID_);
         tickets[ticketID_].forSale = false;
+        emit TicketSold(_seller, msg.sender, ticketID_, _priceToPay);
     }
 
     /**

@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 //INTERNAL IMPORT
-import Style from "./Button.module.css";
+import Style from './Button.module.css';
 
 export const Button = (props: {
   btnName: string;
@@ -15,7 +15,9 @@ export const Button = (props: {
         className={`${Style.button} ${props.classStyle}`}
         onClick={() => props.handleClick()}
       >
-        {props.icon} {props.btnName}
+        {props.icon}
+        {''}
+        {props.btnName}
       </button>
     </div>
   );

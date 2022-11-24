@@ -18,8 +18,6 @@ const TicketDetails = () => {
   const ticketID =
     router.query!.id === undefined ? `""` : router.query.id!.toString();
 
-  console.log(router.query);
-
   useEffect(() => {
     (async () => {
       if (!router.isReady) return;

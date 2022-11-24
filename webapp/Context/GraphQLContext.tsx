@@ -1,11 +1,11 @@
-import React from "react";
-import { gql, ApolloClient, InMemoryCache } from "@apollo/client";
+import React from 'react';
+import { gql, ApolloClient, InMemoryCache } from '@apollo/client';
 import {
   IEvent,
   ITicketType,
   ITicketWithRelation,
-} from "../constants/interfaces";
-import { now } from "moment";
+} from '../constants/interfaces';
+import { now } from 'moment';
 
 export interface IGraphQLContext {
   getEvents(): Promise<IEvent[]>;
@@ -106,6 +106,9 @@ export const GraphQLProvider = (props: { children: any }) => {
           id
           ticketTypeID
           eventID
+          owner
+          forSale
+          price
           ticketType {
             id
             name
@@ -125,6 +128,15 @@ export const GraphQLProvider = (props: { children: any }) => {
               startDay
               endDay
             }
+          }
+          activities(orderBy: date, orderDirection: desc) {
+            id
+            ticketID
+            from
+            to
+            date
+            price
+            activityType
           }
         }
       }
