@@ -91,6 +91,12 @@
         "internalType": "address",
         "name": "owner",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "currentMintedTicket",
+        "type": "uint64"
       }
     ],
     "name": "NewTicket",
@@ -219,25 +225,6 @@
       }
     ],
     "name": "Transfer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "ticketTypeID",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint64",
-        "name": "currentMintTickets",
-        "type": "uint64"
-      }
-    ],
-    "name": "UpdateCurrentMintedTicketInTicketType",
     "type": "event"
   },
   {

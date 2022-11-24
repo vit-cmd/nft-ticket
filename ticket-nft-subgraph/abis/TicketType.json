@@ -46,12 +46,6 @@
       {
         "indexed": false,
         "internalType": "uint64",
-        "name": "currentMintTickets",
-        "type": "uint64"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint64",
         "name": "maxTicketCount",
         "type": "uint64"
       },

@@ -1,0 +1,34 @@
+.modal {
+  position: fixed; /* Stay in place */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.92); /* Black w/ opacity */
+  z-index: 9999;
+}
+
+.modal_content {
+  width: 40%;
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 2rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border: 2px dashed;
+}
+
+.modal_header {
+  text-align: center;
+}
+
+.modal_header_title {
+  font-size: 3.6rem;
+  font-weight: 500;
+}

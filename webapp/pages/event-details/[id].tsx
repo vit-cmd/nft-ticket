@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
-import Image from "next/image";
-import { MdVerified } from "react-icons/md";
-import { BiDetail } from "react-icons/bi";
-import { useRouter } from "next/router";
-import Style from "../../styles/event-details.module.css";
+import React, { useEffect } from 'react';
+import Image from 'next/image';
+import { MdVerified } from 'react-icons/md';
+import { BiDetail } from 'react-icons/bi';
+import { useRouter } from 'next/router';
+import Style from '../../styles/event-details.module.css';
 import {
   ConnectionContext,
   GraphQLContext,
   IPFSContext,
   TicketTypeContext,
-} from "../../Context";
-import { isArray } from "@apollo/client/cache/inmemory/helpers";
-import { IEvent, ITicketType } from "../../constants/interfaces";
-import { Button, Error, Slider } from "../../components";
-import { UploadImage } from "../../components/CreateNFT/UploadImage/UploadImage";
-import { RiText } from "react-icons/ri";
-import { FaSortAmountUpAlt } from "react-icons/fa";
-import { ImPriceTags } from "react-icons/im";
+} from '../../Context';
+import { isArray } from '@apollo/client/cache/inmemory/helpers';
+import { IEvent, ITicketType } from '../../constants/interfaces';
+import { Button, Error, Slider } from '../../components';
+import { UploadImage } from '../../components/CreateNFT/UploadImage/UploadImage';
+import { RiText } from 'react-icons/ri';
+import { FaSortAmountUpAlt } from 'react-icons/fa';
+import { ImPriceTags } from 'react-icons/im';
 
 const EventDetailsWithId = () => {
   const [event, setEvent] = React.useState<IEvent>();
@@ -64,17 +64,17 @@ const EventDetailsWithId = () => {
   const handleCreateTicketType = async () => {
     if (!provider) {
       setOpenError(true);
-      setError("Please connect wallet");
+      setError('Please connect wallet');
       return;
     }
     if (!file || !name || !description || !price || !amount) {
       setOpenError(true);
-      setError("Please enter all fields");
+      setError('Please enter all fields');
       <Error />;
       return;
     }
     if (price < 0 || amount < 0) {
-      alert("Number can not be negative.");
+      alert('Number can not be negative.');
       return;
     }
     const hash = await uploadImage(file!);
@@ -99,7 +99,7 @@ const EventDetailsWithId = () => {
       id: result,
     };
     setTicketTypes([...ticketTypes!, newTicketType]);
-    alert("Create ticket type successfully.");
+    alert('Create ticket type successfully.');
   };
 
   if (!event || isArray(id)) {
@@ -117,13 +117,13 @@ const EventDetailsWithId = () => {
             width={500}
             height={500}
             objectFit="cover"
-            alt={"Avatar"}
+            alt={'Avatar'}
           />
         </div>
         <div className={Style.event_details_box}>
           <div className={Style.event_details_headher}>
             <h1>
-              {event.name}.{" "}
+              {event.name}.{' '}
               <span>
                 <MdVerified />
               </span>
@@ -152,11 +152,11 @@ const EventDetailsWithId = () => {
           </span>
           <div className={Style.info_event}>
             <span>
-              Start day:{" "}
+              Start day:{' '}
               <b>{`${startDay!.getMonth()}/${startDay!.getDate()}/${startDay!.getFullYear()}`}</b>
             </span>
             <span>
-              End day:{" "}
+              End day:{' '}
               <b>{`${endDay!.getMonth()}/${endDay!.getDate()}/${endDay!.getFullYear()}`}</b>
             </span>
             <span>

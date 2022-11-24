@@ -1,8 +1,10 @@
-import {ethers} from 'ethers';
-import {Props} from 'next/script';
-import React, {useCallback, useEffect, useState} from 'react';
-import {Event} from '../../@types/contracts/Event';
+import { ethers } from 'ethers';
+import { Props } from 'next/script';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Event } from '../../@types/contracts/Event';
+import { Ticket } from '../../@types/contracts/Ticket';
 import EventSol from '../../@artifacts/contracts/Event.sol/Event.json';
+import TicketSol from '../../@artifacts/contracts/Ticket.sol/Ticket.json';
 
 export interface IConnection {
   // variable
@@ -19,13 +21,18 @@ export interface IConnection {
   setEventManager: React.Dispatch<React.SetStateAction<boolean>>;
   // function
   connectWallet(): Promise<void>;
-  checkEventManager(_provider: ethers.providers.Web3Provider, _currentAccount: string): Promise<boolean>;
+  checkEventManager(
+    _provider: ethers.providers.Web3Provider,
+    _currentAccount: string
+  ): Promise<boolean>;
 }
 
 const ADDRESS_EVENT_CONTRACT = process.env.NEXT_PUBLIC_EVENT_CONTRACT;
 const ADMIN_ADDRESS = process.env.NEXT_PUBLIC_ADMIN_ADDRESS;
 
-export const ConnectionContext = React.createContext<IConnection>({} as IConnection);
+export const ConnectionContext = React.createContext<IConnection>(
+  {} as IConnection
+);
 
 export function connectContract(
   addressContract: string,
@@ -35,7 +42,7 @@ export function connectContract(
   return new ethers.Contract(addressContract, abi, signer);
 }
 
-export const ConnectionProvider: React.FC<Props> = ({children}) => {
+export const ConnectionProvider: React.FC<Props> = ({ children }) => {
   //------USESTATE
   const [error, setError] = useState<string>('');
   const [openError, setOpenError] = useState<boolean>(false);
@@ -47,7 +54,7 @@ export const ConnectionProvider: React.FC<Props> = ({children}) => {
 
   //---CHECK IF WALLET IS Installed
   const listenChangeAccount = useCallback((): void => {
-    const {ethereum} = window as any;
+    const { ethereum } = window as any;
     if (!ethereum) {
       return;
     }
@@ -69,7 +76,7 @@ export const ConnectionProvider: React.FC<Props> = ({children}) => {
 
   //---CONNET WALLET FUNCTION
   const connectWallet = async (): Promise<void> => {
-    const {ethereum} = window as any;
+    const { ethereum } = window as any;
     if (!ethereum) {
       setOpenError(true);
       setError('Install MetaMask');
@@ -78,7 +85,7 @@ export const ConnectionProvider: React.FC<Props> = ({children}) => {
 
     const _provider = new ethers.providers.Web3Provider(ethereum);
     const accounts = await ethereum.request({
-      method: 'eth_requestAccounts'
+      method: 'eth_requestAccounts',
     });
     const balanceBigNumber = await _provider.getBalance(accounts[0]);
     const balance = ethers.utils.formatEther(balanceBigNumber);
@@ -97,15 +104,23 @@ export const ConnectionProvider: React.FC<Props> = ({children}) => {
     _provider: ethers.providers.Web3Provider,
     _currentAccount: string
   ): Promise<boolean> => {
-    const contract = connectContract(ADDRESS_EVENT_CONTRACT!, EventSol.abi, _provider.getSigner()) as Event;
+    const contract = connectContract(
+      ADDRESS_EVENT_CONTRACT!,
+      EventSol.abi,
+      _provider.getSigner()
+    ) as Event;
 
-    const isEventManager = await contract!.getApprovedEventManager(_currentAccount);
+    const isEventManager = await contract!.getApprovedEventManager(
+      _currentAccount
+    );
 
     return isEventManager;
   };
 
   const checkAdmin = (_currentAccount: string): boolean => {
-    return _currentAccount.toLowerCase() === ADMIN_ADDRESS?.toLowerCase() ? true : false;
+    return _currentAccount.toLowerCase() === ADMIN_ADDRESS?.toLowerCase()
+      ? true
+      : false;
   };
 
   useEffect(() => {
@@ -124,8 +139,12 @@ export const ConnectionProvider: React.FC<Props> = ({children}) => {
     eventManager,
     setOpenError,
     connectWallet,
-    checkEventManager
+    checkEventManager,
   };
 
-  return <ConnectionContext.Provider value={value}>{children}</ConnectionContext.Provider>;
+  return (
+    <ConnectionContext.Provider value={value}>
+      {children}
+    </ConnectionContext.Provider>
+  );
 };

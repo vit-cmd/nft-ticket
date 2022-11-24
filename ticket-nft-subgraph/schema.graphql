@@ -33,10 +33,7 @@ type Ticket @entity {
   owner: Bytes!
   forSale: Boolean!
   price: BigDecimal
-  listings: [Listing!]! @derivedFrom(field: "ticket")
-  sales: [Sale!]! @derivedFrom(field: "ticket")
-  transfers: [Transfer!]! @derivedFrom(field: "ticket")
-  cancels: [Cancel!]! @derivedFrom(field: "ticket")
+  activities: [Activity!]! @derivedFrom(field: "ticket")
 }
 
 type EventManager @entity {
@@ -44,39 +41,20 @@ type EventManager @entity {
   approve: Boolean!
 }
 
-type Transfer @entity {
-  id: ID!
-  from: Bytes!
-  to: Bytes!
-  ticketID: BigInt!
-  date: BigInt!
-  ticket: Ticket!
+enum ActivityType {
+  TRANSFER
+  LISTING
+  CANCEL
+  SOLD
 }
 
-type Sale @entity {
+type Activity @entity {
   id: ID!
-  from: Bytes!
-  to: Bytes!
   ticketID: BigInt!
-  price: BigDecimal!
-  date: BigInt!
-  ticket: Ticket!
-}
-
-type Listing @entity {
-  id: ID!
-  price: BigDecimal!
   from: Bytes!
-  ticketID: BigInt!
+  to: Bytes
   date: BigInt!
-  ticket: Ticket!
-}
-
-type Cancel @entity {
-  id: ID!
-  price: BigDecimal!
-  from: Bytes!
-  ticketID: BigInt!
-  date: BigInt!
+  price: BigDecimal
+  activityType: ActivityType!
   ticket: Ticket!
 }

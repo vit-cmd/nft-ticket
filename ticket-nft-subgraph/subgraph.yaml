@@ -29,7 +29,7 @@ dataSources:
     network: localhost
     source:
       abi: TicketType
-      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -40,7 +40,7 @@ dataSources:
         - name: TicketType
           file: ./abis/TicketType.json
       eventHandlers:
-        - event: NewTicketType(uint256,uint256,string,string,string,uint64,uint64,uint64)
+        - event: NewTicketType(uint256,uint256,string,string,string,uint64,uint64)
           handler: handleNewTicketType
       file: ./src/ticket-type.ts
   - kind: ethereum
@@ -55,14 +55,13 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Ticket
+        - Activity
       abis:
         - name: Ticket
           file: ./abis/Ticket.json
       eventHandlers:
-        - event: NewTicket(uint256,uint256,uint256,address)
+        - event: NewTicket(uint256,uint256,uint256,address,uint64)
           handler: handleNewTicket
-        - event: UpdateCurrentMintedTicketInTicketType(uint256,uint64)
-          handler: handleUpdateCurrentMintedTicketInTicketType
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransferTicket
         - event: TicketForSale(address,uint256,uint64)

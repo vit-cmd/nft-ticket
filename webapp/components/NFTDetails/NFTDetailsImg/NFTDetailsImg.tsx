@@ -63,10 +63,10 @@ const NFTDetailsImg = (props: any) => {
 
           <div className={Style.NFTDetailsImg_box_NFT_img}>
             <Image
-              src={'/../../image/nft_1.png'}
+              src={`${process.env.NEXT_PUBLIC_DEDICATED_GATEWAY_SUBDOMAIN}/ipfs/${nft.ticketType.hashImage}`}
               className={Style.NFTDetailsImg_box_NFT_img_img}
               alt="NFT image"
-              width={700}
+              width={800}
               height={800}
               objectFit="cover"
             />
